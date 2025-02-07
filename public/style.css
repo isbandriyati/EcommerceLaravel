@@ -13,20 +13,72 @@ main {
     flex-grow: 1;  /* Membuat konten utama mengisi sisa ruang */
 }
 
-footer {
-    background-color:rgb(250, 250, 250); /* atau #f8f9fa untuk abu-abu lebih terang */
-    color: white;
-}
 
-.nav-item {
-    margin-right: 20px; /* Memberikan jarak antar item */
-}
+    /* Navbar Styling */
+    .navbar {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+    }
+
+    /* Navbar Title */
+    .navbar-brand a {
+        font-family: 'Georgia', serif;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #2c5f2d; /* Green Serif Color */
+    }
+
+    .navbar-brand a:hover {
+        text-decoration: underline;
+    }
+
+    /* Search Bar */
+    .navbar form .form-control {
+        width: 100%; /* Adjust width to 40% */
+        border: 2px solid #28a745; /* Green border */
+        border-radius: 5px;
+    }
+
+    .navbar form .btn-outline-primary {
+        background-color: #28a745; /* Green background */
+        color: white; /* White text */
+        border: 2px solid #28a745; /* Green border */
+    }
+
+    .navbar form .btn-outline-primary:hover {
+        background-color: #1e7c34; /* Darker green */
+        border-color: #1e7c34;
+    }
+
+    /* Icons Styling */
+    .navbar .nav-link {
+        color: #333;
+        transition: color 0.3s;
+    }
+
+    .navbar .nav-link:hover {
+        color: #28a745; /* Green hover color */
+    }
+
+    /* Buttons */
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .btn-success:hover {
+        background-color: #1e7c34;
+        border-color: #1e7c34;
+    }
+
 
 .carousel-img {
     border-radius: 15px; /* Membuat gambar dengan sudut melengkung */
     transition: transform 0.5s ease, box-shadow 0.3s ease; /* Menambahkan transisi halus */
     margin-left: 200px;  /* Menambahkan margin kiri */
     margin-right: 200px; /* Menambahkan margin kanan */
+    margin-top: 100px;
     max-width: calc(100% - 400px);
     display: block;
 }
@@ -121,6 +173,7 @@ h3 {
     margin-left: 300px;
     margin-right: 300px;
     margin-bottom: 200px;
+    margin-top:200px;
 }
 
 .row {
@@ -130,32 +183,15 @@ h3 {
 }
 
 
-.card {
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-}
+
 
 .card:hover {
     transform: translateY(-10px); /* Geser sedikit ke atas saat hover */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Menambahkan shadow saat hover */
 }
 
-.card-body {
-    background-color: #ffffff; /* Menjaga bagian dalam card tetap putih */
-    flex-grow: 1;
-}
 
-.card-img-top {
-    max-height: 100px; /* Menjaga gambar tidak terlalu besar */
-    object-fit: cover;
-}
+
 
 a.text-decoration-none {
     display: block; /* Menjadikan link selebar card */
