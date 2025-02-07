@@ -78,4 +78,14 @@ class CartController extends Controller
     {
         //
     }
+
+    public function add($id)
+    {
+        return "Menambahkan produk dengan ID: $id ke keranjang.";
+    }
+
+    public function buy($id)
+    {
+        return "Membeli produk dengan ID: $id.";
+    }
 }

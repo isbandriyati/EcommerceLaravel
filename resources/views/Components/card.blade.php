@@ -1,13 +1,10 @@
-
-@props(['image', 'name', 'description', 'price', 'button_text'])
-
 <div class="card">
-    <div style="background-image: url('{{ $image }}'); widht:100%; height: 200px;background-size: cover;background-position:center;background-repeat: no-repeat;"></div>
-  <div class="card-body">
-    <h5 class="card-title">{{ $name }}</h5>
-    <p class="card-text">{{ $description }}</p>
-    <p>Rp.{{ number_format($price, 0, ",", ".") }}</p>
-    <a href="#" class="btn btn-primary">{{ $button_text }}</a>
-
-  </div>
+    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+    <div class="card-body">
+        <h5 class="card-title">{{ $product->name }}</h5>
+        <p class="card-text">{{ Str::limit($product->description, 100) }}</p>
+        <a href="{{ route('product.show', $product->id) }}" class="btn btn-primary">Detail</a>
+        <a href="{{ route('cart.add', $product->id) }}" class="btn btn-warning"><i class="bi bi-cart-plus"></i></a>
+        <a href="{{ route('cart.buy', $product->id) }}" class="btn btn-success">Beli</a>
+    </div>
 </div>

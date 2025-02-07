@@ -10,6 +10,8 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'image'];
+    
     // Relasi One-to-Many dengan model Product
     public function products()
     {
