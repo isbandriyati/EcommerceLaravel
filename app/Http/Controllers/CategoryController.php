@@ -17,14 +17,14 @@ class CategoryController extends Controller
 
     public function create()
     {
-        return view('admin.kategoriproduct.create');
+        return view('Admin.KategoriProduct.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',  // Validasi gambar
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',  // Validasi gambar
 
         ]);
 
@@ -42,14 +42,14 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        return view('admin.kategoriproduct.edit', compact('category'));
+        return view('Admin.KategoriProduct.edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,svg|max:2048',
         ]);
     
         // Jika ada gambar baru, simpan dan update gambar

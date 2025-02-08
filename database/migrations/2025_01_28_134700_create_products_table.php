@@ -15,9 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
+            $table->text('prosesor');
+            $table->text('memory');
+            $table->text('brand');
             $table->decimal('price', 10, 2);
             $table->integer('stock');
-            $table->string('image')->nullable();
+            $table->string('image1')->nullable();
+            $table->string('image2')->nullable();
+            $table->string('image3')->nullable();
+            $table->string('image4')->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); 
             $table->timestamps();
         });

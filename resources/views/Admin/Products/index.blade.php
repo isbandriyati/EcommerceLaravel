@@ -13,6 +13,8 @@
                         <th class="border px-4 py-2">ID</th>
                         <th class="border px-4 py-2">Nama</th>
                         <th class="border px-4 py-2">Deskripsi</th>
+                        <th class="border px-4 py-2">Prosesor</th>
+                        <th class="border px-4 py-2">Memory</th>
                         <th class="border px-4 py-2">Gambar</th>
                         <th class="border px-4 py-2">Stok</th>
                         <th class="border px-4 py-2">Harga</th>
@@ -25,20 +27,27 @@
                         <td class="border px-4 py-2">{{ $product->id }}</td>
                         <td class="border px-4 py-2">{{ $product->name }}</td>
                         <td class="border px-4 py-2">{{ $product->description }}</td>
+                        <td class="border px-4 py-2">{{ $product->prosesor }}</td>
+                        <td class="border px-4 py-2">{{ $product->memory }}</td>
                         <td class="border px-4 py-2">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-16 h-16">
                         </td>
                         <td class="border px-4 py-2">{{ $product->stock }}</td>
                         <td class="border px-4 py-2">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
-                        <td class="border px-4 py-2">
-                            <a href="{{ route('product.edit', $product->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded">Edit</a>
-                            
-                            <form action="{{ route('product.destroy', $product->id) }}" method="POST" class="inline">
+                        <td class="border px-4 py-2 flex items-center justify-center space-x-2">
+                            <a href="{{ route('product.edit', $product->id) }}" class="text-blue-500 hover:text-blue-700">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+
+                            <form action="{{ route('product.destroy', $product->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                <button type="submit" class="text-red-500 hover:text-red-700">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </form>
                         </td>
+
                     </tr>
                     @endforeach
                 </tbody>

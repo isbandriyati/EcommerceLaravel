@@ -43,6 +43,24 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td class="col-md-2">
+                        <label for="prosesor" class="form-label">Prosessor</label>
+                        </td>
+                        <td class="col-md-6">
+                            <textarea class="form-control @error('prosesor') is invalid @enderror" id="prosesor" name="prosesor" value="{{ old('prosesor') }}" required></textarea>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-2">
+                            <label for="memory" class="form-label">memory</label>
+                        </td>
+                        <td class="col-md-6">
+                            <textarea class="form-control @error('memory') is invalid @enderror" id="memory" name="memory" value="{{ old('memory') }}" required></textarea>
+                        </td>
+                    </tr>
+
                     <!-- Harga Produk -->
                     <tr>
                         <td class="col-md-3">

@@ -17,7 +17,7 @@ class ProductController extends Controller
         $categories = Category::all();
         $products = Product::all(); 
 
-    return view('products.index', compact('categories', 'products'));
+    return view('Admin.Products.index', compact('categories', 'products'));
     }
 
 
@@ -39,6 +39,9 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'prosesor' => 'required|string',
+            'brand' => 'required|string',
+            'memory' => 'required|string',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif',
@@ -49,9 +52,12 @@ class ProductController extends Controller
         $product = new Product();
         $product->name = $validated['name'];
         $product->description = $validated['description'];
+        $product->prosesor = $validated['prosesor'];
+        $product->memory = $validated['memory'];
         $product->price = $validated['price'];
         $product->category_id = $validated['category_id'];
         $product->stock = $validated['stock'];
+    
         
     
         // Menyimpan gambar jika ada
@@ -92,23 +98,34 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
+            'brand' => 'required|string',
             'price' => 'required|numeric',
+            'prosesor' => 'required|string',
+            'memory' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif',
+            'image1' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
+            'image2' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
+            'image3' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
+            'image4' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
             'stock' => 'required|integer|min:0',
         ]);
 
         $product = Product::findOrFail($id);
         $product->name = $validated['name'];
         $product->description = $validated['description'];
+        $product->description = $validated['brand'];
+        $product->prosesor = $validated['prosesor'];
+        $product->memory = $validated['memory'];
         $product->price = $validated['price'];
         $product->category_id = $validated['category_id'];
         $product->stock = $validated['stock'];
 
          // Menyimpan gambar baru jika ada
     if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('image' , 'public');
-        $product->image = $imagePath;
+        $imagePaths = []; // Array untuk menyimpan path gambar
+        foreach ($request->file('images') as $image) {
+            $imagePaths[] = $image->store('images', 'public'); // Simpan gambar
+        }
     }
 
     $product->save();
