@@ -1,53 +1,100 @@
-<nav class="navbar navbar-expand-lg navbar-primary bg-primary fixed-top">
-    <div class="container">
-        <!-- Bagian Kiri: Login/Register atau Profil -->
-        <div class="d-flex">
-            @guest
-                <a class="btn btn-yellow me-3" href="{{ route('login') }}">Login</a>
-                <a class="btn btn-yellow me-3" href="{{ route('register') }}">Register</a>
-            @else
-                <!-- Dropdown Profile -->
-                <div class="dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle fs-4 me-1"></i>
-                        <span>{{ Auth::user()->name }}</span>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-pencil-square me-2"></i>Edit Profil</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Pengaturan</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button class="dropdown-item text-danger" type="submit">
-                                    <i class="bi bi-box-arrow-right me-2"></i>Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            @endguest
-        </div>
+@props(['categories', 'carts'])
 
-        <!-- Bagian Tengah: Nama Brand & Pencarian -->
-        <div class="mx-auto text-center">
-            <div class="navbar-brand mt-0">
-                <a href="{{ route('home') }}" class="text-decoration-none text-warning">ElectroniCulture</a>
+<nav class="navbar navbar-expand-lg shadow-sm fixed-top py-3 custom-navbar">
+    <div class="container align-items-center">
+        
+        <!-- Logo -->
+        <a class="navbar-brand fw-bold fs-3" href="#">GitalBox</a>
+
+        <!-- Kategori -->
+        <div class="cart-container">
+            <a href="#" class="kategori-icon">Kategori</a>
+
+            <!-- Floating Dropdown -->
+            <div id="cart-dropdown" class="cart-dropdown">
+                <ul>
+                @foreach ($categories as $category)
+                    <li>
+                        <a class="dropdown-item kategori-item" href="{{ route('category.product', $category->id) }}">
+                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="me-2 kategori-img">
+                            {{ $category->name }}
+                        </a>
+                    </li>
+                @endforeach
+                </ul>
             </div>
-            <form class="d-flex mt-3" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-            </form>
         </div>
 
-        <!-- Bagian Kanan: Notifikasi & Keranjang -->
-        <div class="d-flex">
-            <a class="nav-link mx-2" href="#">
-                <i class="bi bi-bell fs-4 text-warning"></i>
+        <!-- Search Bar -->
+        <form class="d-flex flex-grow-1 mx-3">
+            <input class="form-control border-start-0" type="search" placeholder="cari di GitalBox" aria-label="Search">
+        </form>
+
+       
+        <!-- Keranjang -->
+        <div class="cart-container">
+            <a href="#" class="keranjang-icon" id="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count" class="badge bg-danger d-none">0</span>
             </a>
-            <a class="nav-link mx-2" href="#">
-                <i class="bi bi-cart fs-4 text-warning"></i>
-            </a>
+
+            <!-- Floating Dropdown -->
+            <div id="cart-dropdown" class="cart-dropdown">
+                <!-- Jika Keranjang Kosong -->
+                <div id="empty-cart" class="text-center space">
+                    <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png" alt="Empty Cart" class="cart-image">
+                    <p class="fw-bold text-muted">Wah, keranjang belanjamu kosong</p>
+                    <p class="text-muted small">Yuk, isi dengan barang-barang impianmu!</p>
+                    </div>
+                    <a href="#" class="btn btn-outline-success">Mulai Belanja</a>
+                </div>
+
+                <!-- Jika Ada Produk -->
+                <div id="cart-items" class="d-none">
+                    <ul class="list-unstyled mb-2">
+                        <li>Produk 1 - Rp 100.000</li>
+                        <li>Produk 2 - Rp 200.000</li>
+                    </ul>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <span class="text-muted small" id="item-count">2 barang</span>
+                        <a href="/cart" class="btn btn-danger btn-sm">Lihat Keranjang</a>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+
+<span class="text-muted mx-5">|</span>
+
+<!-- Profil Dropdown -->
+<div class="profile-container">
+    <a href="#" class="profile-icon" id="profile-icon">
+        <img src="{{ asset(Auth::user()->profile_photo_path ?? 'default-profile.png') }}" 
+             alt="Profile" class="profile-img">
+    </a>
+
+    <!-- Floating Dropdown -->
+    <div id="profile-dropdown" class="profile-dropdown">
+        <ul>
+            <li>
+                <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                    <i class="fas fa-user-edit me-2"></i> Edit Profil
+                </a>
+            </li>
+            <li>
+                <a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </li>
+        </ul>
     </div>
+</div>
+
+       
+</div>
 </nav>

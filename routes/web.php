@@ -7,8 +7,10 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\BrandController;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\brands;
 
 
 
@@ -22,6 +24,7 @@ Route::middleware('admin')->group(function () {
     Route::get('/dashboard', function () {return view('admin.dashboard');})->name('dashboard');
     Route::resource('product', ProductController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('brands', BrandController::class);
 
 });
 
@@ -33,8 +36,13 @@ Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.
 
 
 Route::get('/home',[HomeController::class, 'index']);
-Route::get('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
-Route::get('/cart/buy/{id}', [CartController::class, 'buy'])->name('cart.buy');
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+
 Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('products.byCategory');
 Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('category.product');
 
@@ -50,5 +58,12 @@ Route::get('/home', function () {
     $products = Product::all();
     return view('HalamanHome.home', compact('categories', 'products'));
 })->name('home');
+
+
+Route::get('/products', [ProductController::class, 'userIndex'])->name('products.index');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+
+
 
 require __DIR__.'/auth.php';

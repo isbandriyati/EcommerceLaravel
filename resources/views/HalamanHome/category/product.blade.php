@@ -14,7 +14,7 @@
                 <div class="card mt-4 h-100 d-flex flex-column" 
                      onclick="window.location.href='{{ route('product.show', $product->id) }}'" 
                      style="cursor: pointer;">
-                    <img src="{{ asset('storage/' . $product->image) }}" 
+                    <img src="{{ asset('storage/' . $product->image1) }}" 
                          class="card-img-top" 
                          alt="{{ $product->name }}" 
                          style="height: 200px; object-fit: cover;">

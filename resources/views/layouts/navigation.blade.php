@@ -23,6 +23,10 @@
                     <x-nav-link :href="url('categories')" :active="request()->routeIs('category.index')">
                         {{ __('kategori product') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('brands.index')" :active="request()->routeIs('brand.index')">
+                        {{ __('Brand') }}
+                    </x-nav-link>               
                 </div>
             </div>
 

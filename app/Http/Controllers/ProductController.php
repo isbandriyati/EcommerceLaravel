@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Brand;
 use App\Models\Category;
 
 
@@ -15,9 +16,20 @@ class ProductController extends Controller
     public function index()
     {
         $categories = Category::all();
+        $brands = Brand::all();
         $products = Product::all(); 
 
-    return view('Admin.Products.index', compact('categories', 'products'));
+    return view('Admin.Products.index', compact('categories', 'products','brands'));
+    }
+
+
+    public function userIndex()
+    {
+    $categories = Category::all();
+    $products = Product::paginate(15); 
+    $brands = Brand::all();
+
+    return view('HalamanHome.HalamanProduct.index', compact('categories', 'products','brands'));
     }
 
 
@@ -28,7 +40,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('Admin.Products.create', compact('categories'));
+        $brands = Brand::all();
+        return view('Admin.Products.create', compact('categories', 'brands'));
     }
 
     /**
@@ -39,12 +52,17 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'prosesor' => 'required|string',
-            'brand' => 'required|string',
-            'memory' => 'required|string',
+            'brand_id' => 'required|exists:brands,id',
+            'prosesor' => 'required|array',
+            'prosesor.*' => 'string|max:255',
+            'memory_options' => 'required|array',
+            'memory_options.*' => 'string|max:255',
             'price' => 'required|numeric',
             'category_id' => 'required|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpg,png,jpeg,gif',
+            'image1' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
+            'image2' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
+            'image3' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
+            'image4' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
             'stock' => 'required|integer|min:0',
         ]);
     
@@ -52,8 +70,9 @@ class ProductController extends Controller
         $product = new Product();
         $product->name = $validated['name'];
         $product->description = $validated['description'];
-        $product->prosesor = $validated['prosesor'];
-        $product->memory = $validated['memory'];
+        $product->brand_id= $validated['brand_id'];
+        $product->prosesor = json_encode($validated['prosesor']); // Langsung array
+        $product->memory = json_encode($validated['memory_options']); 
         $product->price = $validated['price'];
         $product->category_id = $validated['category_id'];
         $product->stock = $validated['stock'];
@@ -61,9 +80,15 @@ class ProductController extends Controller
         
     
         // Menyimpan gambar jika ada
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $product->image = $imagePath;
+        if ($request->hasFile('images')) {
+            $uploadedImages = $request->file('images');
+            $imageFields = ['image1', 'image2', 'image3', 'image4']; // Kolom di database
+        
+            foreach ($uploadedImages as $index => $image) {
+                if (isset($imageFields[$index])) {
+                    $product->{$imageFields[$index]} = $image->store('images', 'public');
+                }
+            }
         }
     
         $product->save();
@@ -75,9 +100,13 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $product = Product::with('brand')->findOrFail($id);
+        $categories = Category::all();
+        
+
+        return view('HalamanHome.HalamanProduct.show', compact('product','categories'));
     }
 
     /**
@@ -87,7 +116,13 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id); // Mencari produk berdasarkan ID
         $categories = Category::all(); // Mengambil semua kategori
-        return view('Admin.Products.edit', compact('product', 'categories')); // Mengirimkan data produk dan kategori ke tampilan
+        $brands = Brand::all();
+
+        $product->prosesor = json_decode($product->prosesor,'[]', true);
+        $product->memory = json_decode($product->memory,'[]', true);
+
+        return view('Admin.Products.edit', compact('product', 'categories', 'brands'));
+        
     }
 
     /**
@@ -98,35 +133,45 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'brand' => 'required|string',
+            'brand_id' => 'required|exists:brands,id',
             'price' => 'required|numeric',
-            'prosesor' => 'required|string',
-            'memory' => 'required|string',
+            'prosesor' => 'required|array',
+            'prosesor.*' => 'string|max:255',
+            'memory_options' => 'required|array',
+            'memory_options.*' => 'string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'image1' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
-            'image2' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
-            'image3' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
-            'image4' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
+            'images' => 'nullable|array', // Pastikan images adalah array
+            'images.*' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif|max:2048', // Validasi setiap file
             'stock' => 'required|integer|min:0',
         ]);
 
         $product = Product::findOrFail($id);
         $product->name = $validated['name'];
         $product->description = $validated['description'];
-        $product->description = $validated['brand'];
-        $product->prosesor = $validated['prosesor'];
-        $product->memory = $validated['memory'];
+        $product->brand_id= $validated['brand_id'];
+        $product->prosesor = json_encode($validated['prosesor']); // Langsung array
+        $product->memory = json_encode($validated['memory_options']); 
         $product->price = $validated['price'];
         $product->category_id = $validated['category_id'];
         $product->stock = $validated['stock'];
 
          // Menyimpan gambar baru jika ada
-    if ($request->hasFile('image')) {
-        $imagePaths = []; // Array untuk menyimpan path gambar
-        foreach ($request->file('images') as $image) {
-            $imagePaths[] = $image->store('images', 'public'); // Simpan gambar
+         if ($request->hasFile('images')) {
+            $uploadedImages = $request->file('images');
+            $imageFields = ['image1', 'image2', 'image3', 'image4'];
+        
+            foreach ($uploadedImages as $index => $image) {
+                if (isset($imageFields[$index])) {
+                    // Hapus gambar lama jika ada
+                    if ($product->{$imageFields[$index]}) {
+                        \Storage::disk('public')->delete($product->{$imageFields[$index]});
+                    }
+        
+                    // Simpan gambar baru
+                    $product->{$imageFields[$index]} = $image->store('images', 'public');
+                }
+            }
         }
-    }
 
     $product->save();
 
@@ -149,8 +194,17 @@ class ProductController extends Controller
     $category = Category::findOrFail($id);
     $products = Product::where('category_id', $id)->get();
     $categories = Category::all();
+    $brands = Brand::all();
 
-    return view('HalamanHome.category.product', compact('category', 'products', 'categories'));
+    return view('HalamanHome.category.product', compact('category', 'products', 'categories', 'brands'));
+    }
+
+
+    public function searchProduct(Request $request){
+
+    $search = $request->search;
+    $products = Product::where('name', 'LIKE', '%' .$search.'%');
+    return view('home', compact('products'));
     }
     
 }

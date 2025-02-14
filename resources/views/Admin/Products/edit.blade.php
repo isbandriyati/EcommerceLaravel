@@ -43,23 +43,53 @@
                         </td>
                     </tr>
 
+                    <!-- Prosessor -->
                     <tr>
-                        <td class="col-md-2">
-                        <label for="prosesor" class="form-label">Prosessor</label>
-                        </td>
+                        <td class="col-md-2"><label for="prosesor" class="form-label">Prosesor</label></td>
                         <td class="col-md-6">
-                            <textarea class="form-control @error('prosesor') is invalid @enderror" id="prosesor" name="prosesor" value="{{ old('prosesor') }}" required></textarea>
+                        <div id="prosesor-container">
+                            @if(old('prosesor', isset($product) ? json_decode($product->prosesor, true) : []))
+                                @foreach(old('prosesor', json_decode($product->prosesor ?? '[]', true)) as $index => $prosesor)
+                                    <div class="input-group mb-2">
+                                        <input type="text" class="form-control" name="prosesor[]" value="{{ $prosesor }}" placeholder="Masukkan prosesor">
+                                                    <button type="button" class="btn btn-danger remove-prosesor">X</button>
+                                    </div>
+                                @endforeach
+                                        @else
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" name="prosesor[]" placeholder="Masukkan prosesor">
+                                    <button type="button" class="btn btn-primary" id="tambahProsesor">+</button>
+                                </div>
+                            @endif
+                        </div>
+                        @error('prosesor') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </td>
-                    </tr>
+                    </tr>                  
 
+
+                    <!-- Memory -->
                     <tr>
-                        <td class="col-md-2">
-                            <label for="memory" class="form-label">memory</label>
-                        </td>
-                        <td class="col-md-6">
-                            <textarea class="form-control @error('memory') is invalid @enderror" id="memory" name="memory" value="{{ old('memory') }}" required></textarea>
-                        </td>
-                    </tr>
+    <td class="col-md-2"><label for="memory" class="form-label">Memory</label></td>
+    <td class="col-md-6">
+        <div id="memory-container">
+            @if(old('memory_options', isset($product) ? json_decode($product->memory_options, true) : []))
+                @foreach(old('memory_options', json_decode($product->memory_options ?? '[]', true)) as $index => $memory)
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" name="memory_options[]" value="{{ $memory }}" placeholder="Masukkan kapasitas memory">
+                        <button type="button" class="btn btn-danger remove-memory">X</button>
+                    </div>
+                @endforeach
+            @else
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" name="memory_options[]" placeholder="Masukkan kapasitas memory">
+                    <button type="button" class="btn btn-primary" id="tambahMemory">+</button>
+                </div>
+            @endif
+        </div>
+        @error('memory_options') <div class="invalid-feedback">{{ $message }}</div> @enderror
+    </td>
+</tr>
+    
 
                     <!-- Harga Produk -->
                     <tr>
@@ -94,17 +124,23 @@
 
                     <!-- Gambar Produk -->
                     <tr>
-                        <td class="col-md-3">
-                            <label for="image" class="form-label">Gambar Produk</label>
+                        <td class="col-md-2">
+                            <label for="images" class="form-label">Gambar Produk</label>
                         </td>
-                        <td>
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
-                            @error('image')
+                        <td class="col-md-6">
+                            <button type="button" class="btn btn-primary" onclick="document.getElementById('imageInput').click()">
+                                <i class="bi bi-plus-circle"></i> Tambah Gambar
+                            </button>
+                            <input type="file" id="imageInput" name="images[]" class="d-none" accept="image/*" multiple>
+
+                            <!-- Preview Gambar -->
+                            <div id="imagePreview" class="mt-3 d-flex flex-wrap gap-2"></div> 
+
+                            @error('images')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </td>
                     </tr>
-
                     <!-- Stock Produk -->
                     <tr>
                         <td class="col-md-3">

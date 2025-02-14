@@ -16,76 +16,70 @@ class CartController extends Controller
     {
         $cart = Cart::where('user_id', Auth::id())
             ->get();
-        return view('cart.index', compact('cart'));
+        return view('HalamanHome.Cart.index', compact('cart'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function addToCart(Request $request)
     {
-        //
-    }
+        $product = Product::find($request->product_id);
+        if (!$product) {
+            return redirect()->back()->with('error', 'Produk tidak ditemukan.');
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required',
-            'quantity' => 'required|numeric|min:1',
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$product->id])) {
+            $cart[$product->id]['quantity'] += $request->quantity ?? 1;
+        } else {
+            $cart[$product->id] = [
+                "name" => $product->name,
+                "price" => $product->price,
+                "quantity" => 1,
+            ];
+        }
+
+        session()->put('cart', $cart);
+        
+        $carHtml = '';
+        $cartHtml = "";
+foreach ($cart as $item) {
+    $cartHtml .= "<li>{$item['name']} x{$item['quantity']}</li>";
+}
+        return response()->json([
+            'count' => count($cart),
+            'cart_html' => $cartHtml
         ]);
-        $product = Product::findorFail($request->product_id);
-        $cart =new cart;
-        $cart->user_id = Auth::id();
-        $cart->Product_id =$request->product_id;
-        $cart->quantity=$request->quantity;
-        $cart->save();
-        return redirect()->route('cart.index')
-        ->with('succes', 'product added to cart succesfully!');
-
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Cart $cart)
+    public function updateCart(Request $request)
     {
-        //
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$request->product_id])) {
+            $cart[$request->product_id]['quantity'] = $request->quantity;
+            session()->put('cart', $cart);
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Keranjang diperbarui!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Cart $cart)
+    public function removeFromCart(Request $request)
     {
-        //
+        $cart = session()->get('cart', []);
+        
+        if (isset($cart[$request->product_id])) {
+            unset($cart[$request->product_id]);
+            session()->put('cart', $cart);
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Produk dihapus dari keranjang!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Cart $cart)
+    public function clearCart()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Cart $cart)
-    {
-        //
-    }
-
-    public function add($id)
-    {
-        return "Menambahkan produk dengan ID: $id ke keranjang.";
-    }
-
-    public function buy($id)
-    {
-        return "Membeli produk dengan ID: $id.";
+        session()->forget('cart');
+        return redirect()->route('cart.index')->with('success', 'Keranjang dikosongkan!');
     }
 }
+
+

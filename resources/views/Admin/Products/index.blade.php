@@ -8,7 +8,7 @@
         
         <div class="mt-4">
             <table class="w-full border-collapse border border-gray-300">
-                <thead>
+                <thead>                        
                     <tr class="bg-gray-200">
                         <th class="border px-4 py-2">ID</th>
                         <th class="border px-4 py-2">Nama</th>
@@ -24,13 +24,37 @@
                 <tbody>
                     @foreach ($products as $product)
                     <tr>
-                        <td class="border px-4 py-2">{{ $product->id }}</td>
-                        <td class="border px-4 py-2">{{ $product->name }}</td>
-                        <td class="border px-4 py-2">{{ $product->description }}</td>
-                        <td class="border px-4 py-2">{{ $product->prosesor }}</td>
-                        <td class="border px-4 py-2">{{ $product->memory }}</td>
+                    <td class="border px-4 py-2">{{ $product->id }}</td>
+                    <td class="border px-4 py-2">{{ $product->name }}</td>
+                    <td class="border px-4 py-2">{{ $product->description }}</td>
+
+                    <td class="border px-4 py-2">
+                    @php
+                        $prosesor = is_string($product->prosesor) ? json_decode($product->prosesor, true) : $product->prosesor;
+                    @endphp
+                        {{ is_array($prosesor) ? implode(', ', $prosesor) : $prosesor }}
+                    </td>
+
+                    <td class="border px-4 py-2">
+                        @php
+                        $memory = is_string($product->memory) ? json_decode($product->memory, true) : $product->memory;
+                        @endphp
+                        {{ is_array($memory) ? implode(', ', $memory) : $memory }}
+                    </td>
+
                         <td class="border px-4 py-2">
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="w-16 h-16">
+                        @if ($product->image1)
+                            <img src="{{ asset('storage/' . $product->image1) }}" alt="Image 1" class="w-16 h-16">
+                        @endif
+                        @if ($product->image2)
+                            <img src="{{ asset('storage/' . $product->image2) }}" alt="Image 2" class="w-16 h-16">
+                        @endif
+                        @if ($product->image3)
+                            <img src="{{ asset('storage/' . $product->image3) }}" alt="Image 3" class="w-16 h-16">
+                        @endif
+                        @if ($product->image4)
+                            <img src="{{ asset('storage/' . $product->image4) }}" alt="Image 4" class="w-16 h-16">
+                        @endif
                         </td>
                         <td class="border px-4 py-2">{{ $product->stock }}</td>
                         <td class="border px-4 py-2">Rp {{ number_format($product->price, 0, ',', '.') }}</td>

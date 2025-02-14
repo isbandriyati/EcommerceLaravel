@@ -6,16 +6,16 @@
 <x-carousel />
     
 <!-- Kategori -->
-<div style="border-top: 2px solid #000; border-bottom: 2px solid #000;" class="bg-primary py-3"> 
-    <div class="container-kategori">
+<div style="border-top: 2px solid #000; border-bottom: 2px solid #000;" class="bg-white py-3"> 
+    <div class="container-OurKategori">
         <h5 class="text-white">Browse by category</h5>
         <div class="d-flex flex-wrap justify-content-start">
             @foreach ($categories as $category)
             <div class="p-2">
                 <div class="category-item">
                 <a href="{{ route('category.product', $category->id) }}" class="text-decoration-none">
-                    <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="category-image">
-                    <div class="category-title text-white">{{ $category->name }}</div>
+                    <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="category-image" style="max-width:100%;">
+                    <div class="category-title text-black">{{ $category->name }}</div>
                     </div>
             </div>
             @endforeach
@@ -95,6 +95,7 @@
     </div>
 </div>
 
+<div class="container-countdown">
 <div class="countdown-banner">
         <div class="content">
             <p class="badge">Don't Miss!</p>
@@ -111,7 +112,7 @@
                 <div class="time-block">
                     <span id="minutes">56</span>
                     <p>Min</p>
-                </div>
+                </div>`
                 <div class="time-block">
                     <span id="seconds">54</span>
                     <p>Sec</p>
@@ -123,19 +124,25 @@
             <img src="{{ asset('storage/images/airpods.png') }}" alt="Headphone">
         </div>
     </div>
+</div>
 
 
 
 <!-- Product Terbaru -->
 <div class="container-product">
-    <h3 class="text-left mt-5">Cek Yang terbaru</h3>
-    <div class="row">
+<div class="d-flex justify-content-between align-items-center mt-5">
+        <h3 class="text-left">Cek Yang Terbaru</h3>
+        <a href="{{ route('products.index') }}" class="btn btn-primary">
+            View All Products
+        </a>
+    </div>
+    <div class="row mt-3">
         @foreach ($products as $product)
             <div class="col-md-2">
                 <div class="card mt-4 h-100 d-flex flex-column" 
-                     onclick="window.location.href='{{ route('product.show', $product->id) }}'" 
+                     onclick="window.location.href='{{ route('products.show', $product->id) }}'" 
                      style="cursor: pointer;">
-                    <img src="{{ asset('storage/' . $product->image) }}" 
+                    <img src="{{ asset('storage/' . $product->image1) }}" 
                          class="card-img-top" 
                          alt="{{ $product->name }}" 
                          style="height: 200px; object-fit: cover;">
@@ -163,6 +170,7 @@
         @endforeach
     </div>
 </div>
+
 
 
 

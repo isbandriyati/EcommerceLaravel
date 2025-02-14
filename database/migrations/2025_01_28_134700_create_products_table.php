@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->text('prosesor');
-            $table->text('memory');
-            $table->text('brand');
+            $table->json('prosesor'); // Ubah ke JSON
+            $table->json('memory'); // Ubah ke JSON
             $table->decimal('price', 10, 2);
             $table->integer('stock');
             $table->string('image1')->nullable();
