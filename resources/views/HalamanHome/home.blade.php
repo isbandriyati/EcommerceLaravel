@@ -136,7 +136,7 @@
             View All Products
         </a>
     </div>
-    <div class="row mt-3">
+    <div class="row card-home">
         @foreach ($products as $product)
             <div class="col-md-2">
                 <div class="card mt-4 h-100 d-flex flex-column" 

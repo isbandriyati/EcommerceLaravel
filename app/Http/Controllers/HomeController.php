@@ -19,6 +19,6 @@ class HomeController extends Controller
     // Cek apakah user sudah login sebelum mengambil keranjang
     $carts = auth()->check() ? Cart::where('user_id', auth()->id())->get() : collect();
 
-    return view("HalamanHome.home", compact('products', 'categories', 'brands', 'carts'));
+    return view("HalamanHome.home", compact('products', 'categories', 'brands', 'cartItems'));
     }
 }

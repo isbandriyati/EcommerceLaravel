@@ -63,20 +63,20 @@
         height: 30px;
     }
 
-    /* Keranjang */
+    /* kategori */
     .cart-container {
         position: relative;
         display: inline-block;
         
     }
 
-    .cart-dropdown {
+    .kategori-dropdown {
         position: absolute;
         top: 100%;
         left: -165px;
         width: 550px;
         top: 50px;
-        height: 400px;
+        height: 430px;
         background: #fff;
         border: 1px solid #ddd;
         border-radius: 8px;
@@ -91,13 +91,13 @@
 
     }
 
-    .cart-container:hover .cart-dropdown{
+    .cart-container:hover .kategori-dropdown{
             opacity: 1;
             visibility: visible;
             transform: translateY(0);
             display: block;
     }
-    .cart-image {
+    .kategori-image {
         width: 50px;
         margin-bottom: 10px;
     }
@@ -137,7 +137,11 @@
         transition: transform 0.3s, color 0.3s;
     }
 
-    .cart-container:hover .cart-dropdown {
+    .keranjang-container:hover .keranjang-dropdown {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
         display: block;
     }
 
@@ -170,15 +174,25 @@
 
     /* Tombol Masuk & Daftar */
     .login-btn, .daftar-btn {
-        font-size: 14px;
-        color: black;
-        text-decoration: none;
-        margin-right: 10px;
+        font-size: 14px !important;
+        padding: 2px 6px !important;
+        border-radius: 4px !important;
+        color: black !important;
+        text-decoration: none !important;
+        margin-right: 10px !important;
+        background-color: white !important;
+        cursor: pointer !important;
+        display: inline-block !important;
+
     }
 
     .login-btn:hover, .daftar-btn:hover {
-        text-decoration: underline;
+        color: white !important;  /* Ubah warna teks */
+        background-color: blue !important; /* Ubah warna latar belakang */
+        transition: 0.3s ease-in-out; /* Animasi perubahan warna */
     }
+
+    
 
     .profile-container {
         position: relative;
@@ -292,7 +306,6 @@
         height: 150px;
         overflow: hidden;
         text-align: center;
-        background-color: transparent; /* Background transparan agar tidak ada putih di bawah gambar */
         transition: all 0.3s ease;
     }
 
@@ -719,4 +732,121 @@
 
 .btn-add-cart:hover {
     background-color: darkred;
+}
+
+
+/* styling halaman all product */
+
+/* Styling untuk Container Utama */
+.container-AllProduct {
+    padding: 20px;
+    margin-top: 100px;
+    margin-left: 300px;
+
+}
+
+/* Styling untuk Filter Box */
+.filter-box {
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+}
+.filter-box h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 5px;
+}
+.filter-box ul {
+    padding-left: 0;
+}
+.filter-box li {
+    list-style: none;
+    margin: 5px 0;
+}
+.filter-box input[type='checkbox'] {
+    margin-right: 8px;
+}
+
+/* Styling untuk Price Range */
+#priceRange {
+    width: 100%;
+}
+#priceValue {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px;
+    background-color: #000000;
+    color: white;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+/* Styling untuk Produk */
+.product-card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 200px;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+.card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+.card-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+.card-text {
+    font-size: 14px;
+    color: #666;
+}
+.text-success {
+    font-size: 14px;
+    font-weight: bold;
+    color: #28a745 !important;
+}
+.text-danger {
+    font-size: 14px;
+    font-weight: bold;
+    color: #dc3545 !important;
+}
+
+
+.small-label {
+    font-size: 14px; /* Ukuran teks lebih kecil */
+    font-weight: 500;
+}
+
+.small-box {
+    font-size: 12px; /* Ukuran teks dalam box lebih kecil */
+    padding: 6px 10px; /* Perkecil ukuran box */
+    min-width: 100px; /* Atur lebar minimum */
+    text-align: center;
+}
+
+
+/* Keranjang Container */
+.keranjang-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    display: none;
+}
+.keranjang-container:hover .keranjang-dropdown {
+    display: block;
 }

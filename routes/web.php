@@ -21,7 +21,7 @@ Route::get('/', function () {
 });
 
 Route::middleware('admin')->group(function () {
-    Route::get('/dashboard', function () {return view('admin.dashboard');})->name('dashboard');
+    Route::get('/dashboard', function () {return view('admin.dashboard');})->name('dashboards');
     Route::resource('product', ProductController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('brands', BrandController::class);
@@ -42,15 +42,17 @@ Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+Route::get('/cart/fetch', [CartController::class, 'fetchCart'])->name('cart.fetch');
+Route::get('/checkout/wa', [CartController::class, 'checkoutWa'])->name('cart.checkout.wa');
+
+
 
 Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('products.byCategory');
 Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('category.product');
 
 
 
-Route::get('/Dashboard', [DashboardController::class, 'index'])
-->middleware('auth', 'verified')
-->name('category.index');
+
 
 
 Route::get('/home', function () {

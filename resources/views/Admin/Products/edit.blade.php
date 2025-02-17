@@ -48,7 +48,10 @@
                         <td class="col-md-2"><label for="prosesor" class="form-label">Prosesor</label></td>
                         <td class="col-md-6">
                         <div id="prosesor-container">
-                            @if(old('prosesor', isset($product) ? json_decode($product->prosesor, true) : []))
+                        @php 
+                        $oldProsesor = old('prosesor', isset($product) ? json_decode($product->prosesor ?? '[]', true) : []);
+                        @endphp
+                        @if(is_array($oldProsesor) && count($oldProsesor) > 0)
                                 @foreach(old('prosesor', json_decode($product->prosesor ?? '[]', true)) as $index => $prosesor)
                                     <div class="input-group mb-2">
                                         <input type="text" class="form-control" name="prosesor[]" value="{{ $prosesor }}" placeholder="Masukkan prosesor">
@@ -72,7 +75,10 @@
     <td class="col-md-2"><label for="memory" class="form-label">Memory</label></td>
     <td class="col-md-6">
         <div id="memory-container">
-            @if(old('memory_options', isset($product) ? json_decode($product->memory_options, true) : []))
+        @php 
+            $oldMemory = old('memory_options', isset($product) ? json_decode($product->memory ?? '[]', true) : []);
+        @endphp
+            @if(is_array($oldMemory) && count($oldMemory) > 0)
                 @foreach(old('memory_options', json_decode($product->memory_options ?? '[]', true)) as $index => $memory)
                     <div class="input-group mb-2">
                         <input type="text" class="form-control" name="memory_options[]" value="{{ $memory }}" placeholder="Masukkan kapasitas memory">

@@ -50,37 +50,36 @@
             <div class="card p-3 shadow-sm">
                 <h5 class="mb-3">Pilih Varian</h5>
 
-                <!-- Pilihan Prosesor -->
                 @if(!empty($product->prosesor))
-                    @php $prosesorOptions = json_decode($product->prosesor, true); @endphp
-                    @if(is_array($prosesorOptions))
-                        <div class="mb-3">
-                            <label class="form-label">Prosesor:</label>
-                            <div class="d-flex gap-2">
-                                @foreach($prosesorOptions as $prosesor)
-                                    <input type="radio" class="btn-check" name="prosesor" id="prosesor-{{ $loop->index }}" value="{{ $prosesor }}" autocomplete="off">
-                                    <label class="btn btn-outline-secondary option-box" for="prosesor-{{ $loop->index }}">{{ $prosesor }}</label>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-                @endif
+    @php $prosesorOptions = json_decode($product->prosesor, true); @endphp
+    @if(is_array($prosesorOptions))
+        <div class="mb-3">
+            <label class="form-label small-label">Prosesor:</label>
+            <div class="d-flex flex-column gap-2">
+                @foreach($prosesorOptions as $prosesor)
+                    <input type="radio" class="btn-check" name="prosesor" id="prosesor-{{ $loop->index }}" value="{{ $prosesor }}" autocomplete="off">
+                    <label class="btn btn-outline-secondary option-box small-box" for="prosesor-{{ $loop->index }}">{{ $prosesor }}</label>
+                @endforeach
+            </div>
+        </div>
+    @endif
+@endif
 
-                <!-- Pilihan Memory -->
-                @if(!empty($product->memory))
-                    @php $memoryOptions = json_decode($product->memory, true); @endphp
-                    @if(is_array($memoryOptions))
-                        <div class="mb-3">
-                            <label class="form-label">Memory:</label>
-                            <div class="d-flex gap-2">
-                                @foreach($memoryOptions as $memory)
-                                    <input type="radio" class="btn-check" name="memory" id="memory-{{ $loop->index }}" value="{{ $memory }}" autocomplete="off">
-                                    <label class="btn btn-outline-secondary option-box" for="memory-{{ $loop->index }}">{{ $memory }}</label>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-                @endif
+<!-- Pilihan Memory -->
+@if(!empty($product->memory))
+    @php $memoryOptions = json_decode($product->memory, true); @endphp
+    @if(is_array($memoryOptions))
+        <div class="mb-3">
+            <label class="form-label small-label">Memory:</label>
+            <div class="d-flex gap-2">
+                @foreach($memoryOptions as $memory)
+                    <input type="radio" class="btn-check" name="memory" id="memory-{{ $loop->index }}" value="{{ $memory }}" autocomplete="off">
+                    <label class="btn btn-outline-secondary option-box small-box" for="memory-{{ $loop->index }}">{{ $memory }}</label>
+                @endforeach
+            </div>
+        </div>
+    @endif
+@endif
 
                 <!-- Input Jumlah -->
                 <div class="mb-3">
@@ -93,11 +92,18 @@
                 </div>
 
                 <!-- Tombol Add to Cart -->
-                <form action="{{ route('cart.add') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <button type="submit" class="btn btn-primary btn-lg w-100">Masukkan Keranjang</button>
+                @if(Auth::check()) 
+                <form action="{{ route('cart.add') }}" method="POST" onsubmit="toggleLoading(this)">
+                @csrf
+                    <input type="hidden"  name="product_id" value="{{ $product->id }}">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                    <span class="button-text">Masukkan Keranjang</span>
+                    <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
                 </form>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg w-100">Login untuk Belanja</a>
+                @endif
             </div>
         </div>
     </div>

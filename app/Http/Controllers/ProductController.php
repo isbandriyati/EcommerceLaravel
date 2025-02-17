@@ -30,6 +30,25 @@ class ProductController extends Controller
     $brands = Brand::all();
 
     return view('HalamanHome.HalamanProduct.index', compact('categories', 'products','brands'));
+
+     $query = Product::query();
+
+    if ($request->has('categories')) {
+        $query->whereIn('category_id', $request->categories);
+    }
+
+    if ($request->has('brands')) {
+        $query->whereIn('brand_id', $request->brands);
+    }
+
+    $products = $query->get();
+
+    if ($request->ajax()) {
+        $html = view('partials.product_list', compact('products'))->render();
+        return response()->json(['html' => $html]);
+    }
+
+    return view('products.index', compact('products'));
     }
 
 

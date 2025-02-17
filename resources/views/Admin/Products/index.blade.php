@@ -29,17 +29,19 @@
                     <td class="border px-4 py-2">{{ $product->description }}</td>
 
                     <td class="border px-4 py-2">
-                    @php
-                        $prosesor = is_string($product->prosesor) ? json_decode($product->prosesor, true) : $product->prosesor;
-                    @endphp
-                        {{ is_array($prosesor) ? implode(', ', $prosesor) : $prosesor }}
+                        @php
+                            $prosesor = $product->prosesor ?? '[]';
+                            $prosesor = is_string($prosesor) ? json_decode($prosesor, true) : $prosesor;
+                        @endphp
+                        {{ is_array($prosesor) && !empty($prosesor) ? implode(', ', $prosesor) : 'Tidak ada data' }}
                     </td>
 
                     <td class="border px-4 py-2">
                         @php
-                        $memory = is_string($product->memory) ? json_decode($product->memory, true) : $product->memory;
+                            $memory = $product->memory ?? '[]';
+                            $memory = is_string($memory) ? json_decode($memory, true) : $memory;
                         @endphp
-                        {{ is_array($memory) ? implode(', ', $memory) : $memory }}
+                        {{ is_array($memory) && !empty($memory) ? implode(', ', $memory) : 'Tidak ada data' }}
                     </td>
 
                         <td class="border px-4 py-2">

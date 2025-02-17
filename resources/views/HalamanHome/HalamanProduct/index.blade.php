@@ -4,10 +4,11 @@
 
 @section('content')
 
-<div class="container mt-5"> <!-- Tambahkan margin-top -->
+<div class="container-AllProduct"> 
     <div class="row">
+        <h4>All Product</h4>
         <!-- Filter Kategori -->
-        <div class="col-md-3">
+        <div class="col-md-3" id="filter-form">
             <div class="filter-box p-4 bg-gray-900 text-white rounded">
                 <h2 class="font-bold text-lg">Categories</h2>
                 <ul class="list-unstyled">
@@ -73,15 +74,4 @@
 </div>
 
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-        const priceRange = document.getElementById("priceRange");
-        const priceValue = document.getElementById("priceValue");
-
-        priceRange.addEventListener("input", function() {
-            priceValue.textContent = this.value;
-        });
-    });
-
-</script>
 @endsection

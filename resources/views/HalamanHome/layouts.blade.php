@@ -16,13 +16,20 @@
 </head>
 <body>
 
-<x-navbar :categories="$categories" :carts="$carts ?? collect()" />
+<x-navbar :categories="$categories" :carts="$cartItems ?? collect()" />
 
 
     <main>
         @yield('content')
     </main>
 
+    <!-- Flash Message Alert -->
+    @if(session('success'))
+    <div id="alert-message" class="alert alert-success position-fixed top-0 start-50 translate-middle-x mt-3" role="alert">
+        {{ session('success') }}
+    </div>
+    @endif
+    
     @include('HalamanHome.footer')
 
     <!-- jQuery (Pastikan ini ada sebelum script.js) -->
@@ -33,6 +40,7 @@
 
     <!-- Custom Script -->
     <script src="{{ asset('script.js') }}"></script>
+
 
 
 </body>

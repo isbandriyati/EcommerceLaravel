@@ -45,4 +45,17 @@ class Product extends Model
     {
     return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    public function scopeFilter($query, $filters)
+    {
+    if (isset($filters['categories'])) {
+        $query->whereIn('category_id', $filters['categories']);
+    }
+
+    if (isset($filters['brands'])) {
+        $query->whereIn('brand_id', $filters['brands']);
+    }
+
+    return $query;
+    }
 }

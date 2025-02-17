@@ -20,6 +20,6 @@ class AdminMiddleware
         return $next($request);
         }
 
-        return abort(403);
+        return redirect('/home')->with('error', 'Anda tidak memiliki akses ke halaman admin.');
     }
 }

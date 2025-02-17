@@ -25,11 +25,12 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
-        if(Auth::User()->role== 'admin')
-            return redirect()->intended(route('dashboard', absolute: false));
-        else{
+        if(Auth::user()->role== 'admin') {
+            session()->flash('success', 'Login berhasil! Selamat datang, ' . Auth::user()->name);
+            return redirect()->intended(route('dashboards', absolute: false));
+        }else{
+            session()->flash('success', 'Login berhasil! Selamat datang, ' . Auth::user()->name);
             return redirect()->intended(route('home', absolute: false));
         }
     }
@@ -42,9 +43,10 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
+        session()->flash('success', 'Logout berhasil!');
 
-        return redirect('home');
+
+        return redirect('/home');
     }
 }
