@@ -259,7 +259,9 @@
         background-color: #f5f5f5;
     }
 
-    
+    .profile-dropdown.show {
+        display: block; /* Tampilkan dropdown */
+    }
 
 
     .carousel-img {

@@ -23,33 +23,31 @@ class ProductController extends Controller
     }
 
 
-    public function userIndex()
+    public function userIndex(Request $request)
     {
-    $categories = Category::all();
-    $products = Product::paginate(15); 
-    $brands = Brand::all();
-
-    return view('HalamanHome.HalamanProduct.index', compact('categories', 'products','brands'));
-
-     $query = Product::query();
-
-    if ($request->has('categories')) {
-        $query->whereIn('category_id', $request->categories);
+        $categories = Category::all();
+        $brands = Brand::all();
+    
+        $query = Product::query();
+    
+        // Menambahkan filter kategori jika ada
+        if ($request->has('categories')) {
+            $query->whereIn('category_id', $request->categories);
+        }
+    
+        // Menambahkan filter brand jika ada
+        if ($request->has('brands')) {
+            $query->whereIn('brand_id', $request->brands);
+        }
+    
+        // Menambahkan pagination
+        $products = $query->paginate(15);
+    
+    
+        // Mengirim data produk dan kategori ke halaman jika bukan AJAX
+        return view('HalamanHome.HalamanProduct.index', compact('categories', 'products', 'brands'));
     }
-
-    if ($request->has('brands')) {
-        $query->whereIn('brand_id', $request->brands);
-    }
-
-    $products = $query->get();
-
-    if ($request->ajax()) {
-        $html = view('partials.product_list', compact('products'))->render();
-        return response()->json(['html' => $html]);
-    }
-
-    return view('products.index', compact('products'));
-    }
+    
 
 
 

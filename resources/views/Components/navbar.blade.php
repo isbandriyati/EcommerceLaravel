@@ -8,7 +8,7 @@
 
         <!-- Kategori -->
         <div class="cart-container">
-            <a href="#" class="kategori-icon">Kategori</a>
+            <a href="{{ route('products.index') }}" class="kategori-icon">Kategori</a>
 
             <!-- Floating Dropdown -->
             <div id="cart-dropdown" class="kategori-dropdown">
@@ -34,7 +34,7 @@
 
         <!-- Keranjang -->
 <div class="keranjang-container position-relative">
-    <a href="{{ route('cart.index') }}" class="keranjang-icon" id="cart-icon">
+    <a href="{{ route('cart.index') }}" class="keranjang-icon" id="cartIcon">
         <i class="fas fa-shopping-cart"></i>
         @if(isset($cartItems) && $cartItems->count() > 0)
             <span id="cart-count" class="badge bg-danger">{{ $cartItems->count() }}</span>
@@ -42,10 +42,10 @@
     </a>
 
     <!-- Floating Dropdown -->
-    <div id="keranjang-dropdown" class="keranjang-dropdown p-3 shadow rounded bg-white">
+    <div id="cartDropdown" class="keranjang-dropdown p-3 shadow rounded bg-white">
         @if(isset($cartItems) && $cartItems->count() > 0)
             <!-- Jika Ada Produk -->
-            <div id="keranjang-items">
+            <div id="cart-items-container">
                 <ul class="list-unstyled">
                     @foreach ($cartItems as $item)
                         <li class="d-flex align-items-center py-2">
@@ -74,7 +74,7 @@
                 <img src="{{ asset('images/keranjang-kosong.png') }}" alt="Keranjang Kosong" class="w-50 mx-auto d-block">
                 <h5 class="fw-bold mt-3">Wah, keranjang belanjamu kosong</h5>
                 <p class="text-muted">Yuk, isi dengan barang-barang impianmu!</p>
-                <a href="{{ route('home') }}" class="btn btn-outline-success">Mulai Belanja</a>
+                <a href="{{ route('products.index') }}" class="btn btn-outline-success">Mulai Belanja</a>
             </div>
         @endif
     </div>

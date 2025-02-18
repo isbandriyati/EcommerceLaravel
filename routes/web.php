@@ -41,9 +41,10 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
-Route::post('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
-Route::get('/cart/fetch', [CartController::class, 'fetchCart'])->name('cart.fetch');
+Route::delete('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 Route::get('/checkout/wa', [CartController::class, 'checkoutWa'])->name('cart.checkout.wa');
+Route::get('/cart/items', [CartController::class, 'getCartItems']);
+
 
 
 

@@ -133,7 +133,7 @@
 <div class="d-flex justify-content-between align-items-center mt-5">
         <h3 class="text-left">Cek Yang Terbaru</h3>
         <a href="{{ route('products.index') }}" class="btn btn-primary">
-            View All Products
+        All Products
         </a>
     </div>
     <div class="row card-home">

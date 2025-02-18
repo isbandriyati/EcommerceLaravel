@@ -18,32 +18,41 @@ class CartController extends Controller
         return view('HalamanHome.Cart.index', compact('cartItems'));
     }
 
-    /**
-     * Menambahkan produk ke keranjang
-     */
+   
     public function addToCart(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1'
-        ]);
+{
 
-        $user = Auth::user();
-        $product = Product::findOrFail($request->product_id);
+    $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'quantity' => 'required|integer|min:1'
+    ]);
 
-        $cartItem = Cart::firstOrNew([
-            'user_id' => $user->id,
-            'product_id' => $product->id
-        ]);
+    $user = Auth::user();
+    $product = Product::findOrFail($request->product_id);
 
-        $cartItem->quantity += $request->quantity;
-        $cartItem->save();
+    $cartItem = Cart::firstOrNew([
+        'user_id' => $user->id,
+        'product_id' => $product->id
+    ]);
 
+    $cartItem->quantity += $request->quantity;
+    $cartItem->save();
+
+    $cartItems = Cart::where('user_id', $user->id)->with('product')->get();
+
+    if ($request->wantsJson()) {
         return response()->json([
             'message' => 'Item berhasil ditambahkan ke keranjang!',
-            'cartCount' => Cart::where('user_id', $user->id)->sum('quantity')
+            'cartCount' => $cartItems->sum('quantity'),
+            'cartItems' => $cartItems
         ]);
+        
+    } else {
+        return back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
+   
+}
+
 
     /**
      * Memperbarui jumlah produk dalam keranjang
@@ -86,10 +95,22 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('error', 'Produk tidak ditemukan di keranjang.');
     }
 
+    public function clearCart()
+    {
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
     
-    /**
-     * Checkout melalui WhatsApp
-     */
+        // Hapus semua item keranjang
+        Cart::where('user_id', Auth::id())->delete();
+    
+        return redirect()->route('cart.index')->with('success', 'Keranjang berhasil dikosongkan.');
+    }
+
+
+
+     //Checkout melalui WhatsApp
+     
     public function checkoutWa()
     {
         $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
@@ -128,13 +149,26 @@ class CartController extends Controller
     /**
      * Menampilkan keranjang di navbar
      */
-    public function getCart()
+    public function getCartItems()
     {
-        $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
-
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+    
+        $cartItems = Cart::where('user_id', Auth::id())
+                        ->with('product')
+                        ->get();
+    
+        $totalPrice = $cartItems->sum(function ($cartItem) {
+            return $cartItem->product->price * $cartItem->quantity;
+        });
+    
         return response()->json([
             'cart_items' => $cartItems,
-            'cart_count' => $cartItems->sum('quantity')
+            'cart_count' => $cartItems->sum('quantity'),
+            'total_price' => $totalPrice
         ]);
     }
+
+
 }

@@ -182,6 +182,7 @@ button {
     <div class="mt-4">
         <form action="{{ route('cart.clear') }}" method="POST">
             @csrf
+            @method('DELETE')
             <button type="submit" class="bg-gray-500 text-white px-4 py-2 rounded">Kosongkan Keranjang</button>
         </form>
     </div>

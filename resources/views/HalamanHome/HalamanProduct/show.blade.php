@@ -93,7 +93,7 @@
 
                 <!-- Tombol Add to Cart -->
                 @if(Auth::check()) 
-                <form action="{{ route('cart.add') }}" method="POST" onsubmit="toggleLoading(this)">
+                <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart" onsubmit="toggleLoading(this)">
                 @csrf
                     <input type="hidden"  name="product_id" value="{{ $product->id }}">
                     <button type="submit" class="btn btn-primary btn-lg w-100">
@@ -101,6 +101,9 @@
                     <span class="spinner-border spinner-border-sm d-none" role="status"></span>
                     </button>
                 </form>
+                <div id="product-added-alert" class="alert alert-success d-none" role="alert">
+                Produk berhasil ditambahkan ke keranjang!
+                </div>
                 @else
                     <a href="{{ route('login') }}" class="btn btn-primary btn-lg w-100">Login untuk Belanja</a>
                 @endif
