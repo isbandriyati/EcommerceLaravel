@@ -13,7 +13,7 @@
             @foreach ($categories as $category)
             <div class="p-2">
                 <div class="category-item">
-                <a href="{{ route('category.product', $category->id) }}" class="text-decoration-none">
+                <a href="{{ route('products.byCategory', $category->id) }}" class="text-decoration-none">
                     <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="category-image" style="max-width:100%;">
                     <div class="category-title text-black">{{ $category->name }}</div>
                     </div>

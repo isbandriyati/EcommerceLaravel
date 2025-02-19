@@ -16,9 +16,7 @@ use App\Models\brands;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Route::middleware('admin')->group(function () {
     Route::get('/dashboard', function () {return view('admin.dashboard');})->name('dashboards');
@@ -49,23 +47,18 @@ Route::get('/cart/items', [CartController::class, 'getCartItems']);
 
 
 Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('products.byCategory');
-Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('category.product');
+Route::get('/brand/{id}', [ProductController::class, 'showBrand'])->name('products.byBrand');
 
 
 
 
 
+Route::get('/home',[HomeController::class, 'index'])->name('home');
 
-Route::get('/home', function () {
-    $categories = Category::all();
-    $products = Product::all();
-    return view('HalamanHome.home', compact('categories', 'products'));
-})->name('home');
 
 
 Route::get('/products', [ProductController::class, 'userIndex'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
-
 
 
 

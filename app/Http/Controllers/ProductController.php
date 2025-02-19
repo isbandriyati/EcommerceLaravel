@@ -27,27 +27,38 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $brands = Brand::all();
-    
-        $query = Product::query();
-    
-        // Menambahkan filter kategori jika ada
-        if ($request->has('categories')) {
-            $query->whereIn('category_id', $request->categories);
+
+        $query = Product::query()->with(['category', 'brand']); // Eager load
+
+        // Filter Kategori (One-to-Many)
+        if ($request->filled('categories')) {
+            $selectedCategory = $request->categories;
+            $query->where('category_id', $selectedCategory);
         }
-    
-        // Menambahkan filter brand jika ada
-        if ($request->has('brands')) {
-            $query->whereIn('brand_id', $request->brands);
+
+        // Filter Brand
+        if ($request->filled('brands')) {
+            $selectedBrands = is_array($request->brands) ? $request->brands : [$request->brands];
+            $query->whereIn('brand_id', $selectedBrands);
         }
-    
-        // Menambahkan pagination
+
+        // Filter Harga
+        if ($request->filled('price')) {
+            $query->where('price', '<=', $request->price);
+        }
+
         $products = $query->paginate(15);
-    
-    
-        // Mengirim data produk dan kategori ke halaman jika bukan AJAX
+
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('HalamanHome.HalamanProduct.product_list', compact('products'))->render(),
+                'pagination' => $products->links()->toHtml()
+            ]);
+        }
+
         return view('HalamanHome.HalamanProduct.index', compact('categories', 'products', 'brands'));
     }
-    
+
 
 
 
@@ -82,36 +93,41 @@ class ProductController extends Controller
             'image4' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif',
             'stock' => 'required|integer|min:0',
         ]);
-    
-        // Menyimpan produk baru
-        $product = new Product();
-        $product->name = $validated['name'];
-        $product->description = $validated['description'];
-        $product->brand_id= $validated['brand_id'];
-        $product->prosesor = json_encode($validated['prosesor']); // Langsung array
-        $product->memory = json_encode($validated['memory_options']); 
-        $product->price = $validated['price'];
-        $product->category_id = $validated['category_id'];
-        $product->stock = $validated['stock'];
-    
-        
-    
-        // Menyimpan gambar jika ada
-        if ($request->hasFile('images')) {
-            $uploadedImages = $request->file('images');
-            $imageFields = ['image1', 'image2', 'image3', 'image4']; // Kolom di database
-        
-            foreach ($uploadedImages as $index => $image) {
-                if (isset($imageFields[$index])) {
-                    $product->{$imageFields[$index]} = $image->store('images', 'public');
+
+        DB::beginTransaction(); // Start transaction
+
+        try {
+            $product = new Product();
+            $product->name = $validated['name'];
+            $product->description = $validated['description'];
+            $product->brand_id = $validated['brand_id'];
+            $product->prosesor = json_encode($validated['prosesor']);
+            $product->memory = json_encode($validated['memory_options']);
+            $product->price = $validated['price'];
+            $product->category_id = $validated['category_id'];
+            $product->stock = $validated['stock'];
+
+            if ($request->hasFile('images')) {
+                $uploadedImages = $request->file('images');
+                $imageFields = ['image1', 'image2', 'image3', 'image4'];
+
+                foreach ($uploadedImages as $index => $image) {
+                    if (isset($imageFields[$index])) {
+                        $product->{$imageFields[$index]} = $image->store('images', 'public');
+                    }
                 }
             }
+
+            $product->save();
+
+            DB::commit(); // Commit transaction
+
+            return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan');
+
+        } catch (\Exception $e) {
+            DB::rollback(); // Rollback transaction on error
+            return back()->with('error', 'Gagal menambahkan produk. Silakan coba lagi. ' . $e->getMessage()); // Tampilkan pesan error
         }
-    
-        $product->save();
-    
-        return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan');
-    
     }
 
     /**
@@ -157,44 +173,51 @@ class ProductController extends Controller
             'memory_options' => 'required|array',
             'memory_options.*' => 'string|max:255',
             'category_id' => 'required|exists:categories,id',
-            'images' => 'nullable|array', // Pastikan images adalah array
-            'images.*' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif|max:2048', // Validasi setiap file
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|image|mimes:jpg,png,jpeg,webp,gif|max:2048',
             'stock' => 'required|integer|min:0',
         ]);
 
-        $product = Product::findOrFail($id);
-        $product->name = $validated['name'];
-        $product->description = $validated['description'];
-        $product->brand_id= $validated['brand_id'];
-        $product->prosesor = json_encode($validated['prosesor']); // Langsung array
-        $product->memory = json_encode($validated['memory_options']); 
-        $product->price = $validated['price'];
-        $product->category_id = $validated['category_id'];
-        $product->stock = $validated['stock'];
+        DB::beginTransaction();
 
-         // Menyimpan gambar baru jika ada
-         if ($request->hasFile('images')) {
-            $uploadedImages = $request->file('images');
-            $imageFields = ['image1', 'image2', 'image3', 'image4'];
-        
-            foreach ($uploadedImages as $index => $image) {
-                if (isset($imageFields[$index])) {
-                    // Hapus gambar lama jika ada
-                    if ($product->{$imageFields[$index]}) {
-                        \Storage::disk('public')->delete($product->{$imageFields[$index]});
+        try {
+            $product = Product::findOrFail($id);
+            $product->name = $validated['name'];
+            $product->description = $validated['description'];
+            $product->brand_id = $validated['brand_id'];
+            $product->prosesor = json_encode($validated['prosesor']);
+            $product->memory = json_encode($validated['memory_options']);
+            $product->price = $validated['price'];
+            $product->category_id = $validated['category_id'];
+            $product->stock = $validated['stock'];
+
+            if ($request->hasFile('images')) {
+                $uploadedImages = $request->file('images');
+                $imageFields = ['image1', 'image2', 'image3', 'image4'];
+
+                foreach ($uploadedImages as $index => $image) {
+                    if (isset($imageFields[$index])) {
+                        if ($product->{$imageFields[$index]}) {
+                            \Storage::disk('public')->delete($product->{$imageFields[$index]});
+                        }
+                        $product->{$imageFields[$index]} = $image->store('images', 'public');
                     }
-        
-                    // Simpan gambar baru
-                    $product->{$imageFields[$index]} = $image->store('images', 'public');
                 }
             }
+
+            $product->save();
+
+            DB::commit();
+            return redirect()->route('product.index')->with('success', 'Produk berhasil diupdate');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Gagal mengupdate produk. Silakan coba lagi. ' . $e->getMessage());
         }
-
-    $product->save();
-
-    return redirect()->route('product.index')->with('success', 'Produk berhasil diupdate');
-
     }
+
+
+    
 
     /**
      * Remove the specified resource from storage.
@@ -206,17 +229,7 @@ class ProductController extends Controller
         return redirect()->route('product.index')->with('success', 'Produk berhasil dihapus');
     }
 
-    public function showCategory($id)
-    {
-    $category = Category::findOrFail($id);
-    $products = Product::where('category_id', $id)->get();
-    $categories = Category::all();
-    $brands = Brand::all();
-
-    return view('HalamanHome.category.product', compact('category', 'products', 'categories', 'brands'));
-    }
-
-
+   
     public function searchProduct(Request $request){
 
     $search = $request->search;
@@ -224,4 +237,24 @@ class ProductController extends Controller
     return view('home', compact('products'));
     }
     
+    public function showCategory($id)
+{
+    $category = Category::findOrFail($id);
+    $products = Product::where('category_id', $id)->with(['categories', 'brand'])->get();
+    $categories = Category::all(); // Untuk filter di sidebar
+    $brands = Brand::all();       // Untuk filter di sidebar
+
+    return view('HalamanHome.category.product', compact('category', 'products', 'categories', 'brands'));
+}
+
+public function showBrand($id)
+{
+    $brand = Brand::findOrFail($id);
+    $products = Product::where('brand_id', $id)->with(['categories', 'brand'])->get();
+    $categories = Category::all(); // Untuk filter di sidebar
+    $brands = Brand::all();       // Untuk filter di sidebar
+
+    return view('HalamanHome.brand.product', compact('brand', 'products', 'categories', 'brands')); // View berbeda
+}
+
 }

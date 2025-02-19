@@ -15,10 +15,7 @@ class HomeController extends Controller
     $products = Product::limit(6)->get();
     $categories = Category::all();
     $brands = Brand::all();
-
-    // Cek apakah user sudah login sebelum mengambil keranjang
-    $carts = auth()->check() ? Cart::where('user_id', auth()->id())->get() : collect();
-
+    $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
     return view("HalamanHome.home", compact('products', 'categories', 'brands', 'cartItems'));
     }
 }

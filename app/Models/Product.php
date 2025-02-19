@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-Use App\Models\category;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-
     use HasFactory;
 
     protected $fillable = [
@@ -27,35 +25,28 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'prosesor' => 'array', // Agar otomatis dikonversi ke array
-        'memory' => 'array',   // Agar otomatis dikonversi ke array
+        'prosesor' => 'array',
+        'memory' => 'array',
     ];
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function cart()
-    {
-        return $this->hasMany(Cart::class);
+        return $this->belongsTo(Category::class); // Ini sudah benar untuk one-to-many
     }
 
     public function brand()
     {
-    return $this->belongsTo(Brand::class, 'brand_id');
+        return $this->belongsTo(Brand::class); // Ini juga sudah benar
     }
 
     public function scopeFilter($query, $filters)
     {
-    if (isset($filters['categories'])) {
-        $query->whereIn('category_id', $filters['categories']);
+        if (isset($filters['brands'])) {
+            $query->whereIn('brand_id', $filters['brands']);
+        }
+
+        return $query;
     }
 
-    if (isset($filters['brands'])) {
-        $query->whereIn('brand_id', $filters['brands']);
-    }
-
-    return $query;
-    }
+    
 }

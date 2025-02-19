@@ -15,7 +15,7 @@
                 <ul>
                 @foreach ($categories as $category)
                     <li>
-                        <a class="dropdown-item kategori-item" href="{{ route('category.product', $category->id) }}">
+                        <a class="dropdown-item kategori-item" href="{{ route('products.byCategory', $category->id) }}">
                             <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="me-2 kategori-img">
                             {{ $category->name }}
                         </a>
@@ -43,9 +43,8 @@
 
     <!-- Floating Dropdown -->
     <div id="cartDropdown" class="keranjang-dropdown p-3 shadow rounded bg-white">
+    <div id="cart-items-container">
         @if(isset($cartItems) && $cartItems->count() > 0)
-            <!-- Jika Ada Produk -->
-            <div id="cart-items-container">
                 <ul class="list-unstyled">
                     @foreach ($cartItems as $item)
                         <li class="d-flex align-items-center py-2">
@@ -90,10 +89,13 @@
 <!-- Profil Dropdown -->
 @auth
 <div class="profile-container">
-    <a href="#" class="profile-icon" id="profile-icon">
-        <img src="{{ asset(Auth::user()->profile_photo_path ?? 'default-profile.png') }}" 
-             alt="Profile" class="profile-img">
-    </a>
+    <span class="profile-icon" id="profile-icon">
+        @if (Auth::check())  {{-- Periksa apakah user sudah login --}}
+            {{ Auth::user()->name }}  {{-- Tampilkan nama user --}}
+        @else
+            Guest  {{-- Tampilkan teks default jika belum login --}}
+        @endif
+</span>
 
     <!-- Floating Dropdown -->
     <div id="profile-dropdown" class="profile-dropdown">
@@ -107,9 +109,9 @@
                 <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
                     @csrf
                 </form>
-                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <span href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt me-2"></i> Logout
-                </a>
+                </span>
             </li>
         </ul>
     </div> 

@@ -16,7 +16,7 @@
             @foreach([$product->image1, $product->image2, $product->image3, $product->image4] as $index => $image)
                 @if ($image)
                     <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                        <img id="mainImage" src="{{ asset('storage/' . $image) }}" class="d-block w-100 rounded shadow-sm" style="max-height: 350px; object-fit: cover;" alt="Product Image {{ $index + 1 }}">
+                        <img id="main-image" src="{{ asset('storage/' . $image) }}" class="d-block w-100 rounded shadow-sm" style="max-height: 350px; object-fit: cover;" alt="Product Image {{ $index + 1 }}">
                     </div>
                 @endif
             @endforeach
@@ -27,7 +27,7 @@
     <div class="d-flex justify-content-center mt-2">
         @foreach([$product->image1, $product->image2, $product->image3, $product->image4] as $index => $image)
             @if ($image)
-                <img src="{{ asset('storage/' . $image) }}" class="thumbnail img-thumbnail mx-1 {{ $index == 0 ? 'active' : '' }}" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" onclick="changeImage('{{ asset('storage/' . $image) }}', this)">
+                <img  src="{{ asset('storage/' . $image) }}" class="thumbnail img-thumbnail mx-1 {{ $index == 0 ? 'active' : '' }}" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" onclick="changeImage('{{ asset('storage/' . $image) }}', this)">
             @endif
         @endforeach
     </div>
@@ -79,34 +79,37 @@
             </div>
         </div>
     @endif
-@endif
-
-                <!-- Input Jumlah -->
-                <div class="mb-3">
-                    <label for="quantity" class="form-label">Jumlah:</label>
-                    <div class="input-group">
-                        <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity()">-</button>
-                        <input type="number" id="quantity" name="quantity" class="form-control text-center" value="1" min="1">
-                        <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity()">+</button>
-                    </div>
-                </div>
+@endif  
 
                 <!-- Tombol Add to Cart -->
                 @if(Auth::check()) 
                 <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart" onsubmit="toggleLoading(this)">
-                @csrf
-                    <input type="hidden"  name="product_id" value="{{ $product->id }}">
-                    <button type="submit" class="btn btn-primary btn-lg w-100">
-                    <span class="button-text">Masukkan Keranjang</span>
-                    <span class="spinner-border spinner-border-sm d-none" role="status"></span>
-                    </button>
-                </form>
-                <div id="product-added-alert" class="alert alert-success d-none" role="alert">
-                Produk berhasil ditambahkan ke keranjang!
-                </div>
-                @else
-                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg w-100">Login untuk Belanja</a>
-                @endif
+                 @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+        <!-- Input Quantity -->
+        <div class="mb-2">
+    <label for="quantity-{{ $product->id }}" class="form-label">Jumlah:</label>
+    <div class="input-group">
+        <button type="button" class="btn btn-outline-secondary" onclick="decrementQuantity('{{ $product->id }}')">-</button>
+        <input type="number" id="quantity-{{ $product->id }}" name="quantity" value="1" min="1" class="form-control text-center" required>
+        <button type="button" class="btn btn-outline-secondary" onclick="incrementQuantity('{{ $product->id }}')">+</button>
+    </div>
+    </div>
+
+        <button type="submit" class="btn btn-primary btn-lg w-100">
+            <span class="button-text">Masukkan Keranjang</span>
+            <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+        </button>
+    </form>
+
+    <div id="product-added-alert" class="alert alert-success d-none" role="alert">
+        Produk berhasil ditambahkan ke keranjang!
+    </div>
+@else
+    <a href="{{ route('login') }}" class="btn btn-primary btn-lg w-100">Login untuk Belanja</a>
+@endif 
+
             </div>
         </div>
     </div>

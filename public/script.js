@@ -194,22 +194,17 @@ const addToCart = (productId, quantity) => {
 
 //filter kategori
 $(document).ready(function() {
-    // Fungsi untuk mengirim AJAX saat filter diubah
-    $('#filter-form input').on('change', function() {
-        // Ambil data filter
-        var categories = [];
-        $('#filter-form input[name="categories[]"]:checked').each(function() {
-            categories.push($(this).val());
-        });
+    $('#filter-form input, #priceRange').on('change', function() {
+        let categories = $('#filter-form input[name="categories[]"]:checked').map(function() {
+            return $(this).val();
+        }).get();
 
-        var brands = [];
-        $('#filter-form input[name="brands[]"]:checked').each(function() {
-            brands.push($(this).val());
-        });
+        let brands = $('#filter-form input[name="brands[]"]:checked').map(function() {
+            return $(this).val();
+        }).get();
 
-        var price = $('#priceRange').val();
+        let price = $('#priceRange').val();
 
-        // Kirim permintaan AJAX ke server
         $.ajax({
             url: "{{ route('products.index') }}",
             type: "GET",
@@ -219,18 +214,26 @@ $(document).ready(function() {
                 price: price
             },
             success: function(response) {
-                console.log(response);  // Cek respons dari server
-
-                // Update daftar produk di halaman dengan HTML yang diterima dari server
                 $('#product-list').html(response.html);
+                $('.pagination-container').html(response.pagination);
+
+                // Re-attach event listener ke card setelah update produk
+                $('#product-list .product-clickable').click(function() {
+                    window.location.href = $(this).data('url');
+                });
             },
             error: function(xhr, status, error) {
-                console.log('AJAX Error:', error);  // Cek jika ada error
+                console.error('AJAX Error:', error);
             }
         });
     });
-});
 
+    // Event listener untuk card (dipindahkan ke dalam success AJAX)
+    $('#product-list .product-clickable').click(function() {
+        window.location.href = $(this).data('url');
+    });
+
+});
 $(document).ready(function() {
     $('.dropdown-toggle').click(function(e) {
         e.preventDefault();
@@ -252,4 +255,78 @@ $(document).ready(function() {
             $('#profile-dropdown').removeClass('show'); // Hapus kelas 'show'
         }
     });
+});
+
+function incrementQuantity(productId) {
+    const inputField = document.getElementById(`quantity-${productId}`);
+    inputField.stepUp(); // Atau inputField.value = parseInt(inputField.value) + 1; untuk kontrol lebih
+}
+
+function decrementQuantity(productId) {
+    const inputField = document.getElementById(`quantity-${productId}`);
+    const currentValue = parseInt(inputField.value);
+    if (currentValue > 1) { // Mencegah nilai kurang dari 1
+        inputField.stepDown(); // Atau inputField.value = currentValue - 1; untuk kontrol lebih
+    }
+}
+
+
+function changeImage(newImageSrc, clickedThumbnail) {
+    const mainImage = document.getElementById('main-image');
+    mainImage.src = newImageSrc;
+
+    // Tambahkan class 'active' ke thumbnail yang diklik dan hapus dari thumbnail lainnya
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    thumbnails.forEach(thumbnail => thumbnail.classList.remove('active'));
+    clickedThumbnail.classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const categoryCheckboxes = document.querySelectorAll('#filter-form input[type="checkbox"][name="categories[]"]');
+    const brandCheckboxes = document.querySelectorAll('#filter-form input[type="checkbox"][name="brands[]"]');
+    const productContainer = document.querySelector('.row');
+
+    function filterProducts() {
+        const selectedCategories = Array.from(categoryCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
+
+        const selectedBrands = Array.from(brandCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
+
+        const products = productContainer.querySelectorAll('.product-card');
+
+        products.forEach(product => {
+            const productCategories = product.dataset.categories ? product.dataset.categories.split(',') : [];
+            const productBrand = product.dataset.brand;
+
+            const categoryMatch = selectedCategories.length === 0 || selectedCategories.some(category => productCategories.includes(category));
+            const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(productBrand);
+
+            if (categoryMatch && brandMatch) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+
+    categoryCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', filterProducts);
+    });
+
+    brandCheckboxes.forEach(checkbox => {
+        brandCheckboxes.addEventListener('change', filterProducts);
+    });
+
+    filterProducts();
+});
+
+
+const priceRange = document.getElementById('priceRange');
+const priceValue = document.getElementById('priceValue');
+
+priceRange.addEventListener('input', () => {
+    priceValue.textContent = priceRange.value;
 });
