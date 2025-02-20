@@ -16,7 +16,7 @@
                         @foreach($categories as $category)
                         <li>
                             <label>
-                                <input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ in_array($category->id, request()->categories ?? []) ? 'checked' : '' }}>
+                                <input type="checkbox" name="categories[]" id="category-{{ $category->id }}" value="{{ $category->id }}" {{ in_array($category->id, request()->categories ?? []) ? 'checked' : '' }} >
                                 {{ $category->name }}
                             </label>
                         </li>
@@ -37,10 +37,11 @@
                     <div class="d-flex flex-column gap-2">
                         <input type="range" id="priceRange" min="1" max="99999" value="{{ request()->price ?? 99999 }}" class="form-range" name="price">
                         <span id="priceValue" class="bg-black text-white p-2 text-center">{{ request()->price ?? 99999 }}</span>
-                    </div>
-                </div>
-            </div>
-        
+                        <button type="submit">Apply</button>
+                    </div>     
+                       
+</div>
+</div>
 
         <div class="col-md-9" id="product-list">
             <div class="row mt-3">
@@ -50,8 +51,7 @@
                 {{ $products->links() }}
             </div>
         </div>
-    </div>
-</div>
+
 </form>
 
 

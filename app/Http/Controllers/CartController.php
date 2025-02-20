@@ -9,54 +9,44 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    /**
-     * Menampilkan halaman keranjang
-     */
     public function index()
     {
         $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
         return view('HalamanHome.Cart.index', compact('cartItems'));
     }
 
-   
     public function addToCart(Request $request)
-{
-
-    $request->validate([
-        'product_id' => 'required|exists:products,id',
-        'quantity' => 'required|integer|min:1'
-    ]);
-
-    $user = Auth::user();
-    $product = Product::findOrFail($request->product_id);
-
-    $cartItem = Cart::firstOrNew([
-        'user_id' => $user->id,
-        'product_id' => $product->id
-    ]);
-
-    $cartItem->quantity += $request->quantity;
-    $cartItem->save();
-
-    $cartItems = Cart::where('user_id', $user->id)->with('product')->get();
-
-    if ($request->wantsJson()) {
-        return response()->json([
-            'message' => 'Item berhasil ditambahkan ke keranjang!',
-            'cartCount' => $cartItems->sum('quantity'),
-            'cartItems' => $cartItems
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1'
         ]);
-        
-    } else {
-        return back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+
+        $user = Auth::user();
+        $product = Product::findOrFail($request->product_id);
+
+        $cartItem = Cart::firstOrNew([
+            'user_id' => $user->id,
+            'product_id' => $product->id
+        ]);
+
+        $cartItem->quantity += $request->quantity;
+        $cartItem->save();
+
+        // Mengembalikan respons JSON jika request berasal dari AJAX, jika tidak redirect.
+        if ($request->wantsJson()) {
+            $cartItems = Cart::where('user_id', $user->id)->with('product')->get(); // Ambil data cart setelah update
+            return response()->json([
+                'message' => 'Item berhasil ditambahkan ke keranjang!',
+                'cartCount' => $cartItems->sum('quantity'),
+                'cartItems' => $cartItems // Sertakan cartItems jika diperlukan di frontend
+            ]);
+        } else {
+            return back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        }
     }
-   
-}
 
 
-    /**
-     * Memperbarui jumlah produk dalam keranjang
-     */
     public function updateCart(Request $request)
     {
         $request->validate([
@@ -74,9 +64,6 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Jumlah produk diperbarui!');
     }
 
-    /**
-     * Menghapus produk dari keranjang
-     */
     public function removeFromCart(Request $request)
     {
         $request->validate([
@@ -100,17 +87,12 @@ class CartController extends Controller
         if (!Auth::check()) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-    
-        // Hapus semua item keranjang
+
         Cart::where('user_id', Auth::id())->delete();
-    
+
         return redirect()->route('cart.index')->with('success', 'Keranjang berhasil dikosongkan.');
     }
 
-
-
-     //Checkout melalui WhatsApp
-     
     public function checkoutWa()
     {
         $cartItems = Cart::where('user_id', Auth::id())->with('product')->get();
@@ -133,42 +115,32 @@ class CartController extends Controller
             $productImage = asset('storage/' . optional($item->product)->image1);
 
             $message .= "- {$productName} x{$quantity} = Rp " . number_format($subtotal, 0, ',', '.') . "\n";
-            $message .= "  Lihat produk: {$productLink}\n";
-            $message .= "  Gambar: {$productImage}\n\n";
+            $message .= "  Lihat produk: {$productLink}\n";
+            $message .= "  Gambar: {$productImage}\n\n";
         }
 
         $message .= "\nTotal: Rp " . number_format($total, 0, ',', '.');
         $message .= "\n\nMohon konfirmasi pesanan saya. Terima kasih!";
 
         $encodedMessage = urlencode($message);
-        $whatsappNumber = "6281219657322";
+        $whatsappNumber = "6281219657322"; // Ganti dengan nomor WhatsApp Anda
 
         return redirect("https://wa.me/{$whatsappNumber}?text={$encodedMessage}");
     }
 
-    /**
-     * Menampilkan keranjang di navbar
-     */
     public function getCartItems()
     {
-        if (!Auth::check()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-    
-        $cartItems = Cart::where('user_id', Auth::id())
-                        ->with('product')
-                        ->get();
-    
+
+       $cartItems = Cart::all();
+
         $totalPrice = $cartItems->sum(function ($cartItem) {
             return $cartItem->product->price * $cartItem->quantity;
         });
-    
+
         return response()->json([
             'cart_items' => $cartItems,
             'cart_count' => $cartItems->sum('quantity'),
             'total_price' => $totalPrice
         ]);
     }
-
-
 }

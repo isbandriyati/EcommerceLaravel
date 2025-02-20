@@ -1,6 +1,8 @@
 @foreach ($products as $product)
-<div class="col-md-4 mb-4 product-card" data-categories="@if($product->categories) @dd($product->categories) @foreach($product->categories as $category){{ $category->id }}@if(!$loop->last),@endif @endforeach @endif" data-brand="{{ $product->brand->id ?? '' }}">
-    <div class="card h-100 product-clickable" data-url="{{ route('products.show', $product->id) }}">
+<div class="col-md-4 mb-4 product-card" data-categories="{{ $product->categories && $product->categories->isNotEmpty() ? $product->categories->pluck('id')->implode(',') : '' }}"
+data-brand="{{ $product->brand->id ?? '' }}">
+    
+<div class="card h-100 product-clickable" data-url="{{ route('products.show', $product->id) }}">
         @if ($product->image1)
         <img src="{{ asset('storage/' . $product->image1) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 180px; object-fit: cover;">
         @else

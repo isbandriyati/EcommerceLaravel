@@ -44,38 +44,7 @@
     <!-- Floating Dropdown -->
     <div id="cartDropdown" class="keranjang-dropdown p-3 shadow rounded bg-white">
     <div id="cart-items-container">
-        @if(isset($cartItems) && $cartItems->count() > 0)
-                <ul class="list-unstyled">
-                    @foreach ($cartItems as $item)
-                        <li class="d-flex align-items-center py-2">
-                            <img src="{{ asset('storage/' . $item->product->image1) }}" alt="{{ $item->product->name }}" class="w-16 h-16 object-cover">
-                            <div class="ms-3">
-                                <p class="mb-1 fw-bold">{{ $item->product->name ?? 'Produk tidak ditemukan' }}</p>
-                                <p class="mb-1 text-muted">Rp {{ number_format($item->product->price, 0, ',', '.') }}</p>
-                                <p class="mb-1">Qty: {{ $item->quantity }}</p>
-                                <form action="{{ route('cart.remove') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $item->product_id }}">
-                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                </form>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-                <hr class="dropdown-divider">
-                <div class="text-center">
-                    <a class="btn btn-primary w-100" href="{{ route('cart.index') }}">Lihat Semua</a>
-                </div>
-            </div>
-        @else
-            <!-- Jika Keranjang Kosong -->
-            <div class="text-center p-4">
-                <img src="{{ asset('images/keranjang-kosong.png') }}" alt="Keranjang Kosong" class="w-50 mx-auto d-block">
-                <h5 class="fw-bold mt-3">Wah, keranjang belanjamu kosong</h5>
-                <p class="text-muted">Yuk, isi dengan barang-barang impianmu!</p>
-                <a href="{{ route('products.index') }}" class="btn btn-outline-success">Mulai Belanja</a>
-            </div>
-        @endif
+    </div>
     </div>
 </div>
        

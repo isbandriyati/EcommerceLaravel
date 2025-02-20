@@ -24,40 +24,52 @@ class ProductController extends Controller
 
 
     public function userIndex(Request $request)
-    {
-        $categories = Category::all();
-        $brands = Brand::all();
+{
+    $categories = Category::all();
+    $brands = Brand::all();
 
-        $query = Product::query()->with(['category', 'brand']); // Eager load
+    $query = Product::query()->with(['category', 'brand']);
 
-        // Filter Kategori (One-to-Many)
-        if ($request->filled('categories')) {
-            $selectedCategory = $request->categories;
-            $query->where('category_id', $selectedCategory);
+    // Filter Kategori
+    if ($request->has('categories')) { // Gunakan has() untuk memeriksa keberadaan parameter
+        $selectedCategories = $request->categories;
+        if (is_array($selectedCategories)) { // Pastikan ini array, walaupun seharusnya sudah karena name="categories[]"
+            $query->whereIn('category_id', $selectedCategories);
+        } else {
+            $query->where('category_id', $selectedCategories); // Handle jika hanya satu kategori dipilih
         }
 
-        // Filter Brand
-        if ($request->filled('brands')) {
-            $selectedBrands = is_array($request->brands) ? $request->brands : [$request->brands];
-            $query->whereIn('brand_id', $selectedBrands);
-        }
-
-        // Filter Harga
-        if ($request->filled('price')) {
-            $query->where('price', '<=', $request->price);
-        }
-
-        $products = $query->paginate(15);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'html' => view('HalamanHome.HalamanProduct.product_list', compact('products'))->render(),
-                'pagination' => $products->links()->toHtml()
-            ]);
-        }
-
-        return view('HalamanHome.HalamanProduct.index', compact('categories', 'products', 'brands'));
     }
+
+    // Filter Brand (Peningkatan)
+    if ($request->has('brands')) {
+        $selectedBrands = $request->brands;
+         if (is_array($selectedBrands)) { // Pastikan ini array, walaupun seharusnya sudah karena name="brands[]"
+            $query->whereIn('brand_id', $selectedBrands);
+        } else {
+            $query->where('brand_id', $selectedBrands); // Handle jika hanya satu brand dipilih
+        }
+    }
+
+    // Filter Harga (Peningkatan)
+    if ($request->has('price')) {
+        $price = $request->price;
+        if (is_numeric($price)) { // Pastikan harga adalah angka
+            $query->where('price', '<=', $price);
+        }
+    }
+
+    $products = $query->paginate(15);
+
+    if ($request->ajax()) {
+        return response()->json([
+            'html' => view('HalamanHome.HalamanProduct.product_list', compact('products'))->render(),
+            'pagination' => $products->links()->toHtml()
+        ]);
+    }
+
+    return view('HalamanHome.HalamanProduct.index', compact('categories', 'products', 'brands'));
+}
 
 
 
@@ -94,7 +106,6 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
         ]);
 
-        DB::beginTransaction(); // Start transaction
 
         try {
             $product = new Product();
@@ -120,7 +131,6 @@ class ProductController extends Controller
 
             $product->save();
 
-            DB::commit(); // Commit transaction
 
             return redirect()->route('product.index')->with('success', 'Produk berhasil ditambahkan');
 
@@ -137,11 +147,14 @@ class ProductController extends Controller
     {
         $product = Product::with('brand')->findOrFail($id);
         $categories = Category::all();
-        
-
-        return view('HalamanHome.HalamanProduct.show', compact('product','categories'));
+    
+        $similarProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->limit(4)
+            ->get();
+    
+        return view('HalamanHome.HalamanProduct.show', compact('product', 'categories', 'similarProducts')); // Nama variabel yang benar: $similarProducts
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -240,11 +253,11 @@ class ProductController extends Controller
     public function showCategory($id)
 {
     $category = Category::findOrFail($id);
-    $products = Product::where('category_id', $id)->with(['categories', 'brand'])->get();
+    $products = Product::where('category_id', $id)->with(['category', 'brand'])->get();
     $categories = Category::all(); // Untuk filter di sidebar
     $brands = Brand::all();       // Untuk filter di sidebar
 
-    return view('HalamanHome.category.product', compact('category', 'products', 'categories', 'brands'));
+    return view('HalamanHome.HalamanProduct.product_list', compact('category', 'products','brands'));
 }
 
 public function showBrand($id)

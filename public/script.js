@@ -7,13 +7,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const cartItemsContainer = document.getElementById("keranjang-items");
     const cartList = document.querySelector("#keranjang-items ul");
     const emptyCartMessage = document.getElementById("empty-cart");
-
+    const cartContainer = document.getElementById("cart-items-container");
     // Mengambil data keranjang dari server
     let cart = [];
 
+
     // Fungsi untuk mengambil data keranjang dari server
     function fetchCartData() {
-        fetch("/cart/items", {
+        fetch("/api/carts", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -23,11 +24,48 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(data => {
             cart = data.cart_items;
+            console.log(cart)
             console.log("Isi cart setelah fetch:", cart);
-            updateCartView();
+            //updateCartView();
+            if (cart.length > 0) {
+                cart.forEach(item => {
+                    let product = item.product;
+        
+                    let cartItemHTML = `
+                        <div class="cart-item">
+                            <img src="${product.image1}" alt="${product.name}" width="50">
+                            <div>
+                                <p><strong>${product.name}</strong></p>
+                                <p>Harga: Rp ${product.price}</p>
+                                <p>Jumlah: ${item.quantity}</p>
+                            </div>
+                        </div>
+                    `;
+        
+                    cartContainer.innerHTML += cartItemHTML;
+                });
+                
+            } else if(cart.length == 0){
+                    let emptycartHTML =
+
+                `<h5 class="fw-bold mt-3">Wah, keranjang belanjamu kosong</h5>
+                <p class="text-muted">Yuk, isi dengan barang-barang impianmu!</p>
+                <a href="{{ route('products.index') }}" class="btn btn-outline-success">Mulai Belanja</a>`
+                cartContainer.innerHTML = emptycartHTML;
+            }
+            
+        
         })
         .catch(error => console.error("Error fetching cart data:", error));
     }
+
+    fetchCartData()
+
+
+
+
+
+
 
     // Memperbarui tampilan keranjang
     function updateCartView() {
@@ -171,30 +209,12 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-const addToCart = (productId, quantity) => {
-    fetch('/cart/add', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({
-            product_id: productId,
-            quantity: quantity
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Lakukan sesuatu dengan data yang diterima, misalnya perbarui tampilan keranjang
-        console.log(data);
-    })
-    .catch(error => console.error(error));
-};
+
 
 
 //filter kategori
 $(document).ready(function() {
-    $('#filter-form input, #priceRange').on('change', function() {
+    $('#filter-form').on('change', 'input, #priceRange', function() {
         let categories = $('#filter-form input[name="categories[]"]:checked').map(function() {
             return $(this).val();
         }).get();
@@ -228,10 +248,6 @@ $(document).ready(function() {
         });
     });
 
-    // Event listener untuk card (dipindahkan ke dalam success AJAX)
-    $('#product-list .product-clickable').click(function() {
-        window.location.href = $(this).data('url');
-    });
 
 });
 $(document).ready(function() {
@@ -330,3 +346,4 @@ const priceValue = document.getElementById('priceValue');
 priceRange.addEventListener('input', () => {
     priceValue.textContent = priceRange.value;
 });
+

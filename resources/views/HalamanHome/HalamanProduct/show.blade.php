@@ -115,5 +115,43 @@
     </div>
 </div>
 
+<div class="similar-products">
+    <h2>Produk Serupa</h2>
+    @if ($similarProducts->count() > 0)
+        <div class="row card-home">  {{-- Tambahkan class card-home --}}
+            @foreach ($similarProducts as $similarProduct)
+                <div class="col-md-2">  {{-- Ubah col-md menjadi col-md-2 --}}
+                    <div class="card mt-4 h-100 d-flex flex-column"
+                         onclick="window.location.href='{{ route('products.show', $similarProduct->id) }}'"
+                         style="cursor: pointer;">
+                        <img src="{{ asset('storage/' . $similarProduct->image1) }}"
+                             class="card-img-top"
+                             alt="{{ $similarProduct->name }}"
+                             style="height: 200px; object-fit: cover;">
+
+                        <div class="card-body d-flex flex-column">
+                            <strong class="card-title font-bold">{{ $similarProduct->name }}</strong>
+
+                            <p class="card-text text-success font-weight-bold">
+                                Rp {{ number_format($similarProduct->price, 0, ',', '.') }}
+                            </p>
+
+                            <p class="card-text mt-auto">
+                                <strong>Stok: </strong>
+                                @if($similarProduct->stock > 0)  {{-- Periksa stok produk serupa --}}
+                                    <span class="text-success">{{ $similarProduct->stock }} tersedia</span>
+                                @else
+                                    <span class="text-danger">Habis</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <p>Tidak ada produk serupa.</p>
+    @endif
+</div>
 
 @endsection

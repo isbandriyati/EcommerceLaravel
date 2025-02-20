@@ -862,3 +862,10 @@
     transform: scale(1.02); /* Slightly scale up on hover */
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15); /* Add a subtle shadow */
 }
+
+
+.similar-products{
+    margin-bottom: 300px;
+    margin-top: 100px;
+    width: 1400px;
+}
