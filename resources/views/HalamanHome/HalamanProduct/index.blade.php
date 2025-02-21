@@ -7,7 +7,7 @@
 <div class="container-AllProduct">
     <div class="row">
         <h4>All Product</h4>
-
+            <form id="filter-form">
             <div class="row">  {{-- Tambahkan row untuk filter dan produk --}}
                 <div class="col-md-3">
                     <div class="filter-box p-4 bg-gray-900 text-white rounded">
@@ -64,7 +64,7 @@
         </form>
     </div>
 </div>
-
+</form>
 
 
 @endsection

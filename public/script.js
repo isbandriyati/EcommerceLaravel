@@ -228,7 +228,7 @@ $(document).ready(function() {
         let price = $('#priceRange').val();
 
         $.ajax({
-            url: "{{ route('HalamanHome.HalamanProduct.Produt_list') }}",
+            url: "/products",
             type: "GET",
             data: {
                 categories: categories,

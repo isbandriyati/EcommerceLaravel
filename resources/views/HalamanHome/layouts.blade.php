@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<x-navbar :categories="$categories" :carts="$cartItems ?? collect()" />
+<x-navbar :categories="$categories" :carts="$cartItems" />
 
 
     <main>

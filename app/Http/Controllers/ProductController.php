@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Cart;
+
 
 
 class ProductController extends Controller
@@ -19,6 +21,7 @@ class ProductController extends Controller
         $brands = Brand::all();
         $products = Product::all(); 
 
+
     return view('Admin.Products.index', compact('categories', 'products','brands'));
     }
 
@@ -27,6 +30,8 @@ class ProductController extends Controller
 {
     $categories = Category::all();
     $brands = Brand::all();
+    $cartItems = Cart::all();
+
 
     $query = Product::query()->with(['category', 'brand']);
 
@@ -63,12 +68,12 @@ class ProductController extends Controller
 
     if ($request->ajax()) {
         return response()->json([
-            'html' => view('HalamanHome.HalamanProduct.product_list', compact('categories'))->render(),
+            'html' => view('HalamanHome.HalamanProduct.product_list', compact('categories','products'))->render(),
             'pagination' => $products->links()->toHtml()
         ]);
     }
 
-    return view('HalamanHome.HalamanProduct.index', compact('categories', 'products', 'brands'));
+    return view('HalamanHome.HalamanProduct.index', compact('categories', 'products', 'brands','cartItems'));
 }
 
 
@@ -147,13 +152,14 @@ class ProductController extends Controller
     {
         $product = Product::with('brand')->findOrFail($id);
         $categories = Category::all();
+        $cartItems = Cart::all();
     
         $similarProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
-            ->limit(4)
+            ->limit(6)
             ->get();
     
-        return view('HalamanHome.HalamanProduct.show', compact('product', 'categories', 'similarProducts')); // Nama variabel yang benar: $similarProducts
+        return view('HalamanHome.HalamanProduct.show', compact('product', 'categories', 'similarProducts','cartItems')); // Nama variabel yang benar: $similarProducts
     }
     /**
      * Show the form for editing the specified resource.
@@ -221,7 +227,7 @@ class ProductController extends Controller
             $product->save();
 
             DB::commit();
-            return redirect()->route('product.index')->with('success', 'Produk berhasil diupdate');
+            return redirect()->route('Admin.product.index')->with('success', 'Produk berhasil diupdate');
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -239,7 +245,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id); // Cari produk berdasarkan ID
         $product->delete(); // Hapus produk
-        return redirect()->route('product.index')->with('success', 'Produk berhasil dihapus');
+        return redirect()->route('Admin.product.index')->with('success', 'Produk berhasil dihapus');
     }
 
    
@@ -271,17 +277,14 @@ public function showBrand($id)
 }
 
 public function ProductCategory($id) {
-    $category = Category::find($id); // Gunakan find() jika ingin menangani kasus kategori tidak ditemukan
-    if (!$category) {
-        // Opsi 1: Redirect dengan pesan error
-        return redirect()->back()->with('error', 'Kategori tidak ditemukan.');
-
-    }
-
+    $category = Category::findOrFail($id);
+    $categories = Category::all();
     $products = Product::where('category_id', $id)->with(['category', 'brand'])->get();
-    $categories = Category::all(); // Untuk filter di sidebar
+    $brands = Brand::all();
+    $cartItems = Cart::all();
 
-    return view('HalamanHome.Category.index', compact('category','products','brands'));
+
+    return view('HalamanHome.Category.index', compact('category','categories','products','brands','cartItems'));
 
 }
 

@@ -118,7 +118,7 @@
 <div class="similar-products">
     <h2>Produk Serupa</h2>
     @if ($similarProducts->count() > 0)
-        <div class="row card-home">  {{-- Tambahkan class card-home --}}
+        <div class="row card-simmiliar">  {{-- Tambahkan class card-home --}}
             @foreach ($similarProducts as $similarProduct)
                 <div class="col-md-2">  {{-- Ubah col-md menjadi col-md-2 --}}
                     <div class="card mt-4 h-100 d-flex flex-column"

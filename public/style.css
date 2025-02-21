@@ -1010,3 +1010,60 @@
     }
 }
   
+
+.similar-products h2 {
+    text-align: center;
+}
+
+.card-simmiliar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 300px;
+}
+
+.similar-products .card {
+    border: 1px solid #ddd;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.similar-products .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.similar-products .card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.similar-products .card-body {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+
+
+.similar-products .text-success {
+    color: #28a745 !important;
+}
+
+.similar-products .text-danger {
+    color: #dc3545 !important;
+}
+
+/* Responsif: Grid berubah pada layar kecil */
+@media (max-width: 768px) {
+    .similar-products .col-md-2 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    .similar-products .col-md-2 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
