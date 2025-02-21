@@ -48,7 +48,7 @@ Route::get('/cart/items', [CartController::class, 'getCartItems']);
 
 Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('products.byCategory');
 Route::get('/brand/{id}', [ProductController::class, 'showBrand'])->name('products.byBrand');
-
+Route::get('/category/{id}', [ProdcuctController::class,'ProductCategory'])->name('index.category');
 
 
 

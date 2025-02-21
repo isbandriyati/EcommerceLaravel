@@ -1,53 +1,55 @@
-<footer class="footer mt-auto" style="background-color: black; color: white; padding: 20px 0;">
-   <div class="container">
-      <div class="row text-white">
-         <div class="col-md-3">
-            <div class="middle-heading">Policy Info</div>
-            <ul class="middle-content list-unstyled">
-               <li><a class="underLineOnHover text-white" href="#">Privacy Policy</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Terms of Sale</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Terms of Use</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Report Abuse &amp; Takedown Policy</a></li>
-            </ul>
-         </div>
-         <div class="col-md-3">
-            <div class="middle-heading">Company</div>
-            <ul class="middle-content list-unstyled">
-               <li><a class="underLineOnHover text-white" href="#">About Us</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Core Values</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Careers</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Blog</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Sitemap</a></li>
-            </ul>
-         </div>
-         <div class="col-md-3">
-            <div class="middle-heading">XBusiness</div>
-            <ul class="middle-content list-unstyled">
-               <li><a class="underLineOnHover text-white" href="#">Shopping App</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Sell on BBBootstrap</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Advertise on BBBootstrap</a></li>
-               <li><a class="underLineOnHover text-white" href="mailto:mediarelations@BBBootstrap.com">Media Enquiries</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Be an Affiliate</a></li>
-            </ul>
-         </div>
-         <div class="col-md-3">
-            <div class="middle-heading">Need Help?</div>
-            <ul class="middle-content list-unstyled">
-               <li><a class="underLineOnHover text-white" href="#">FAQ</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Contact Us</a></li>
-               <li><a class="underLineOnHover text-white" href="#">Online Shopping</a></li>
-            </ul>
-         </div>
-      </div>
-      <hr style="border-color: gray;">
-      <div class="row">
-         <div class="col-md-6 text-white">&copy; 2024, ElectroniCulture All Rights Reserved</div>
-         <div class="col-md-6 text-end">
-            <img src="https://img.icons8.com/officel/40/000000/mastercard.png">
-            <img src="https://img.icons8.com/color/40/000000/visa.png">
-            <img src="https://img.icons8.com/color/40/000000/amex.png">
-            <img src="https://img.icons8.com/color/40/000000/discover.png">
-         </div>
-      </div>
-   </div>
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                
+                <p class="mt-3">
+                    Gitalbox - Solusi Elektronik Terpercaya Anda.
+                </p>
+            </div>
+            <div class="col-md-3">
+                <h5>Kategori Produk</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="no-underline">Laptop & Komputer</a></li>
+                    <li><a href="#" class="no-underline">Smartphone & Tablet</a></li>
+                    <li><a href="#" class="no-underline">Audio & Video</a></li>
+                    <li><a href="#" class="no-underline">Kamera & Drone</a></li>
+                    <li><a href="#" class="no-underline">Aksesoris Elektronik</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Layanan Pelanggan</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="no-underline">Bantuan & FAQ</a></li>
+                    <li><a href="#" class="no-underline">Cara Pemesanan</a></li>
+                    <li><a href="#" class="no-underline">Pengiriman & Pengembalian</a></li>
+                    <li><a href="#" class="no-underline">Garansi Produk</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Tentang Kami</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="no-underline">Tentang Gitalbox</a></li>
+                    <li><a href="#" class="no-underline">Hubungi Kami</a></li>
+                    <li><a href="#" class="no-underline">Blog</a></li>
+                </ul>
+                <div class="mt-3">
+                    <p>Ikuti Kami:</p>
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p>&copy; 2023 Gitalbox. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <img src="https://stitmadani.ac.id/wp-content/uploads/2023/11/5.jpg" alt="Metode Pembayaran" width="50">
+            </div>
+        </div>
+    </div>
 </footer>

@@ -63,7 +63,7 @@ class ProductController extends Controller
 
     if ($request->ajax()) {
         return response()->json([
-            'html' => view('HalamanHome.HalamanProduct.product_list', compact('products'))->render(),
+            'html' => view('HalamanHome.HalamanProduct.product_list', compact('categories'))->render(),
             'pagination' => $products->links()->toHtml()
         ]);
     }
@@ -269,5 +269,21 @@ public function showBrand($id)
 
     return view('HalamanHome.brand.product', compact('brand', 'products', 'categories', 'brands')); // View berbeda
 }
+
+public function ProductCategory($id) {
+    $category = Category::find($id); // Gunakan find() jika ingin menangani kasus kategori tidak ditemukan
+    if (!$category) {
+        // Opsi 1: Redirect dengan pesan error
+        return redirect()->back()->with('error', 'Kategori tidak ditemukan.');
+
+    }
+
+    $products = Product::where('category_id', $id)->with(['category', 'brand'])->get();
+    $categories = Category::all(); // Untuk filter di sidebar
+
+    return view('HalamanHome.Category.index', compact('category','products','brands'));
+
+}
+
 
 }

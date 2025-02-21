@@ -13,7 +13,7 @@
             @foreach ($categories as $category)
             <div class="p-2">
                 <div class="category-item">
-                <a href="{{ route('products.byCategory', $category->id) }}" class="text-decoration-none">
+                <a href="{{ route('index.category', $category->id) }}" class="text-decoration-none">
                     <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="category-image" style="max-width:100%;">
                     <div class="category-title text-black">{{ $category->name }}</div>
                     </div>
@@ -49,7 +49,7 @@
                             <span class="text-new">NEW</span>
                             <h5 class="card-title mt-2">Samsung Galaxy Z Fold6</h5>
                             <p class="card-text">Berkekuatan CPU: Snapdragon 8 Gen 3 For Galaxy Rp 24.499.000</p>
-                            <a href="#" class="btn btn-primary">Check out now</a>
+                            <a href="http://127.0.0.1:8000/products/5" class="btn btn-primary">Check out now</a>
                         </div>
                         <img src="{{ asset('storage/images/samsungultra.jpg') }}" alt="Samsung Galaxy Z Fold6">
                     </div>
@@ -62,7 +62,7 @@
                             <span class="text-new">NEW</span>
                             <h5 class="card-title mt-2">Apple MacBook Pro M4 14 inci (2024)</h5>
                             <p class="card-text">MacBook Pro 14 inci dengan chip M4 menghadirkan performa spektakuler Rp 27.999.000</p>
-                            <a href="#" class="btn btn-primary">Check out now</a>
+                            <a href="http://127.0.0.1:8000/products/6" class="btn btn-primary">Check out now</a>
                         </div>
                         <img src="{{ asset('storage/images/macbook.jpg') }}" alt="Apple MacBook Pro M4">
                     </div>

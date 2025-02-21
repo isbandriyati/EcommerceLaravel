@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
                     let cartItemHTML = `
                         <div class="cart-item">
-                            <img src="${product.image1}" alt="${product.name}" width="50">
+                            <img src="${product.image}" alt="${product.name}" width="50">
                             <div>
                                 <p><strong>${product.name}</strong></p>
                                 <p>Harga: Rp ${product.price}</p>
@@ -48,9 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if(cart.length == 0){
                     let emptycartHTML =
 
-                `<h5 class="fw-bold mt-3">Wah, keranjang belanjamu kosong</h5>
+                `<div class="keranjang-kosong">
+                <h5 class="fw-bold mt-3">Wah, keranjang belanjamu kosong</h5>
                 <p class="text-muted">Yuk, isi dengan barang-barang impianmu!</p>
-                <a href="{{ route('products.index') }}" class="btn btn-outline-success">Mulai Belanja</a>`
+                <a href="{{ route('products.index') }}" class="btn btn-outline-success">Mulai Belanja</a>
+                </div>`
                 cartContainer.innerHTML = emptycartHTML;
             }
             
@@ -226,7 +228,7 @@ $(document).ready(function() {
         let price = $('#priceRange').val();
 
         $.ajax({
-            url: "{{ route('products.index') }}",
+            url: "{{ route('HalamanHome.HalamanProduct.Produt_list') }}",
             type: "GET",
             data: {
                 categories: categories,
@@ -333,8 +335,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     brandCheckboxes.forEach(checkbox => {
-        brandCheckboxes.addEventListener('change', filterProducts);
-    });
+        checkbox.addEventListener('change', filterProducts);
+      });
+    
 
     filterProducts();
 });

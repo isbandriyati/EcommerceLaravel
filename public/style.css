@@ -76,7 +76,7 @@
         left: -165px;
         width: 550px;
         top: 50px;
-        height: 430px;
+        height: 300px;
         background: #fff;
         border: 1px solid #ddd;
         border-radius: 8px;
@@ -86,7 +86,7 @@
         opacity: 0;
         visibility: hidden;
         transform: translateY(10px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
+        transition: opacity 0.8s ease, transform 0.8s ease;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 
     }
@@ -792,12 +792,10 @@
     border-radius: 10px;
     overflow: hidden;
     transition: transform 0.2s ease-in-out;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     width: 200px;
 }
 .product-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
 }
 .card-img-top {
     border-top-left-radius: 10px;
@@ -844,10 +842,22 @@
 /* Keranjang Container */
 .keranjang-dropdown {
     position: absolute;
-    top: 100%;
-    right: 0;
-    width: 300px;
-    display: none;
+        top: 100%;
+        left: -165px;
+        width: 350px;
+        top: 30px;
+        height: 430px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        z-index: 100;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: opacity 0.5s ease, transform 0.8s ease;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 .keranjang-container:hover .keranjang-dropdown {
     display: block;
@@ -869,3 +879,134 @@
     margin-top: 100px;
     width: 1400px;
 }
+
+
+.keranjang-kosong {
+    display: flex; /* Mengaktifkan flexbox */
+    flex-direction: column; /* Mengatur arah flex menjadi vertikal */
+    align-items: center; /* Memusatkan item secara horizontal */
+    justify-content: center; /* Memusatkan item secara vertikal */
+    height: 200px; /* Mengatur tinggi container (opsional) */
+  }
+
+  .keranjang-kosong {
+    text-align: center; /* Memusatkan teks */
+    padding: 20px; /* Memberikan ruang di sekitar konten */
+  }
+  
+  .keranjang-kosong h5 {
+    color: #333; /* Warna judul lebih gelap */
+    margin-bottom: 10px; /* Jarak antara judul dan teks */
+  }
+  
+  .keranjang-kosong p {
+    color: #777; /* Warna teks lebih terang */
+    margin-bottom: 20px; /* Jarak antara teks dan tombol */
+  }
+  
+  .keranjang-kosong .btn {
+    background-color: #28a745; /* Warna latar belakang tombol (hijau) */
+    border-color: #28a745; /* Warna border tombol */
+    color: #fff; /* Warna teks tombol (putih) */
+  }
+  
+  .keranjang-kosong .btn:hover {
+    background-color: #1e7e34; /* Warna latar belakang tombol saat dihover (hijau lebih gelap) */
+    border-color: #1e7e34; /* Warna border tombol saat dihover */
+  }
+
+  .cart-item {
+    display: flex; /* Mengatur item cart menjadi flexbox */
+    align-items: center; /* Memusatkan item secara vertikal */
+    padding: 10px; /* Memberikan padding di sekitar item */
+    border-bottom: 1px solid #eee; /* Garis pemisah antar item */
+}
+
+.cart-item img {
+    margin-right: 10px; /* Jarak antara gambar dan deskripsi */
+    max-width: 50px; /* Lebar maksimum gambar */
+    height: auto; /* Tinggi menyesuaikan proporsi */
+}
+
+.cart-item div {
+    flex-grow: 1; /* Deskripsi item mengisi ruang yang tersedia */
+}
+
+.cart-item p {
+    margin: 0; /* Menghapus margin default pada paragraf */
+    font-size: 14px; /* Ukuran font yang lebih kecil */
+}
+
+.cart-item strong {
+    font-size: 16px; /* Ukuran font untuk nama produk */
+}
+
+/* Opsi tambahan: Hover effect */
+.cart-item:hover {
+    background-color: #f5f5f5; /* Warna latar belakang saat dihover */
+}
+
+.no-underline {
+    text-decoration: none;
+    color: inherit; /* Atau warna spesifik: color: #333; misalnya */
+  }
+  .pagination-container {
+    display: flex; /* Mengatur pagination menjadi flexbox */
+    justify-content: center; /* Memusatkan pagination di tengah */
+    margin-top: 20px; /* Spasi atas pagination */
+}
+
+.pagination {
+    display: flex; /* Mengatur list pagination menjadi flexbox */
+    list-style: none; /* Menghapus bullet list */
+    padding: 0;
+}
+
+.pagination li {
+    margin: 0 5px; /* Spasi antar item */
+}
+
+.pagination a, .pagination span { /* Style untuk link dan span (current page) */
+    padding: 8px 16px; /* Padding dalam */
+    border: 1px solid #ddd; /* Border */
+    color: #333; /* Warna teks */
+    text-decoration: none; /* Menghapus garis bawah */
+    border-radius: 4px; /* Radius border */
+    transition: background-color 0.3s ease; /* Transisi hover */
+    min-width: 36px; /* Lebar minimum untuk menjaga tampilan rata */
+    text-align: center; /* Teks rata tengah */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination a:hover {
+    background-color: #eee; /* Hover background */
+}
+
+
+
+.pagination .disabled a, .pagination .disabled span { /* Style untuk link disabled */
+    color: #999; /* Warna teks disabled */
+    border-color: #ddd; /* Warna border disabled */
+    background-color: #fff; /* Warna background disabled */
+    cursor: default; /* Cursor default pada link disabled */
+    pointer-events: none; /* Menonaktifkan klik */
+}
+
+/* Optional: Style untuk tombol "Previous" dan "Next" */
+.pagination .prev a, .pagination .next a {
+    padding: 8px 12px; /* Padding lebih kecil */
+}
+
+/* Optional: Style untuk responsive */
+@media (max-width: 768px) {
+    .pagination {
+        flex-wrap: wrap; /* Bungkus item pagination jika terlalu lebar */
+    }
+
+    .pagination li {
+        margin: 5px; /* Margin lebih kecil pada layar kecil */
+    }
+}
+  

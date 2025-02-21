@@ -15,7 +15,7 @@
                 <ul>
                 @foreach ($categories as $category)
                     <li>
-                        <a class="dropdown-item kategori-item" href="{{ route('products.byCategory', $category->id) }}">
+                        <a class="dropdown-item kategori-item" href="{{ route('index.category', $category->id) }}">
                             <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="me-2 kategori-img">
                             {{ $category->name }}
                         </a>
