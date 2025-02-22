@@ -214,44 +214,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-//filter kategori
-$(document).ready(function() {
-    $('#filter-form').on('change', 'input, #priceRange', function() {
-        let categories = $('#filter-form input[name="categories[]"]:checked').map(function() {
-            return $(this).val();
-        }).get();
-
-        let brands = $('#filter-form input[name="brands[]"]:checked').map(function() {
-            return $(this).val();
-        }).get();
-
-        let price = $('#priceRange').val();
-
-        $.ajax({
-            url: "/products",
-            type: "GET",
-            data: {
-                categories: categories,
-                brands: brands,
-                price: price
-            },
-            success: function(response) {
-                $('#product-list').html(response.html);
-                $('.pagination-container').html(response.pagination);
-
-                // Re-attach event listener ke card setelah update produk
-                $('#product-list .product-clickable').click(function() {
-                    window.location.href = $(this).data('url');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', error);
-            }
-        });
-    });
 
 
-});
+
+
 $(document).ready(function() {
     $('.dropdown-toggle').click(function(e) {
         e.preventDefault();
@@ -350,3 +316,34 @@ priceRange.addEventListener('input', () => {
     priceValue.textContent = priceRange.value;
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    // Set target date (adjust this date as needed)
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 15); // 15 hari dari sekarang
+    targetDate.setHours(targetDate.getHours() + 10);
+    targetDate.setMinutes(targetDate.getMinutes() + 56);
+    targetDate.setSeconds(targetDate.getSeconds() + 54);
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const timeLeft = targetDate - now;
+
+        if (timeLeft <= 0) {
+            document.querySelector(".timer").innerHTML = "<p>Time's up!</p>";
+            return;
+        }
+
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        document.getElementById("days").textContent = days;
+        document.getElementById("hours").textContent = hours;
+        document.getElementById("minutes").textContent = minutes;
+        document.getElementById("seconds").textContent = seconds;
+    }
+
+    updateCountdown(); // Run once immediately
+    setInterval(updateCountdown, 1000); // Update every second
+});

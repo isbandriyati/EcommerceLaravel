@@ -4,10 +4,11 @@
 
 @section('content')
 
+
+<form action="{{ route('products.filter') }}" method="GET">
 <div class="container-AllProduct">
     <div class="row">
         <h4>All Product</h4>
-            <form id="filter-form">
             <div class="row">  {{-- Tambahkan row untuk filter dan produk --}}
                 <div class="col-md-3">
                     <div class="filter-box p-4 bg-gray-900 text-white rounded">
@@ -16,7 +17,7 @@
                             @foreach($categories as $category)
                                 <li>
                                     <label>
-                                        <input type="checkbox"  id="category-{{ $category->id }}" value="{{ $category->id }}" {{ in_array($category->id, request()->categories ?? []) ? 'checked' : '' }}>
+                                        <input type="checkbox"  id="category-{{ $category->id }}" value="{{ $category->id }}" name="categories[]">
                                         {{ $category->name }}
                                     </label>
                                 </li>
@@ -27,16 +28,14 @@
                         <ul class="list-unstyled">
                             @foreach($brands as $brand)
                                 <li>
-                                    <input type="checkbox" id="brand-{{ $brand->id }}" name="brands[]" value="{{ $brand->id }}" {{ in_array($brand->id, request()->brands ?? []) ? 'checked' : '' }}>
+                                    <input type="checkbox" id="brand-{{ $brand->id }}" name="brands[]" value="{{ $brand->id }}">
                                     <label for="brand-{{ $brand->id }}">{{ $brand->name }}</label>
                                 </li>
                             @endforeach
                         </ul>
 
-                        <h2 class="mt-4 font-bold text-lg">Filter By Price</h2>
+                    
                         <div class="d-flex flex-column gap-2">
-                            <input type="range" id="priceRange" min="1" max="99999" value="{{ request()->price ?? 99999 }}" class="form-range" name="price">
-                            <span id="priceValue" class="bg-black text-white p-2 text-center">{{ request()->price ?? 99999 }}</span>
                             <button type="submit" class="btn btn-primary mt-2">Apply</button> {{-- Tambahkan class btn dan margin top --}}
                         </div>
                     </div>
@@ -61,10 +60,10 @@
                     </div>
                 </div>
             </div> {{-- Akhir row untuk filter dan produk --}}
-        </form>
-    </div>
-</div>
 </form>
+    
+        </div>
+</div>
 
 
 @endsection

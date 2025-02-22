@@ -1067,3 +1067,29 @@
         max-width: 100%;
     }
 }
+
+@media (max-width: 767px) {
+    .col-md-2 {
+        width: 50%; /* Dua kartu per baris di mobile */
+        padding: 0 5px; /* Tambahkan sedikit padding */
+    }
+
+    .card-img-top {
+        height: 150px; /* Kurangi tinggi gambar di mobile */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .col-md-2 {
+        width: 33.33%; /* Tiga kartu per baris di iPad */
+        padding: 0 10px; /* Tambahkan sedikit padding */
+    }
+    .product-grid {
+        grid-template-columns: 1fr; /* Satu kolom di layar mobile */
+    }
+
+    .card-img-top {
+        height: 180px; /* Sedikit kurangi tinggi gambar di iPad */
+    }
+}
+

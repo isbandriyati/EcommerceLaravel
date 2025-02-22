@@ -289,4 +289,33 @@ public function ProductCategory($id) {
 }
 
 
+
+public function filterProducts(Request $request)
+{
+    $categories = Category::all();
+    $brands = Brand::all();
+    $cartItems = Cart::all();
+    $products = Product::query();
+
+    // Filter berdasarkan kategori
+    if ($request->has('categories')) {
+        $products->whereIn('category_id', $request->input('categories'));
+    }
+
+    // Filter berdasarkan merek
+    if ($request->has('brands')) {
+        $products->whereIn('brand_id', $request->input('brands'));
+    }
+
+    // Filter berdasarkan harga
+    if ($request->has('price')) {
+        $products->where('price', '<=', $request->input('price'));
+    }
+
+    $products = $products->paginate(10); // Atau sesuai dengan jumlah produk per halaman
+
+    return view('HalamanHome.HalamanProduct.index', compact('products', 'categories', 'brands','cartItems')); // Sesuaikan view name
+}
+
+
 }
