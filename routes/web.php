@@ -61,6 +61,11 @@ Route::get('/home',[HomeController::class, 'index'])->name('home');
 Route::get('/products', [ProductController::class, 'userIndex'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
+Route::get('/config', function () {
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+});
+
 
 
 require __DIR__.'/auth.php';
