@@ -83,11 +83,8 @@ return [
         ],
 
         'papertrail' => [
-            'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
-            'handler_with' => NullHandler::class,
-            'processors' => [PsrLogMessageProcessor::class],
+        'driver' => 'monolog',
+        'handler' => null, // Nonaktifkan papertrail
         ],
 
         'stderr' => [
