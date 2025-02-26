@@ -112,7 +112,7 @@
                 <div class="time-block">
                     <span id="minutes">56</span>
                     <p>Min</p>
-                </div>`
+                </div>
                 <div class="time-block">
                     <span id="seconds">54</span>
                     <p>Sec</p>

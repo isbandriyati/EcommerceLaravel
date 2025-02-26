@@ -4,7 +4,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use App\Models\Cart;
+use App\View\Components\Carousel;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -26,5 +28,7 @@ class AppServiceProvider extends ServiceProvider
             $cartCount = Auth::check() ? Cart::where('user_id', Auth::id())->sum('quantity') : 0;
             $view->with('cartCount', $cartCount);
         });
+
+        Blade::component('carousel', Carousel::class);
     }
 }
