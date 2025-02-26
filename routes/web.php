@@ -33,7 +33,7 @@ Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.
 
 
 
-Route::get('/home',[HomeController::class, 'index']);
+Route::get('/',[HomeController::class, 'index']);
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
