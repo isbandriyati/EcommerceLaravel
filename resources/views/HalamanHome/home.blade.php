@@ -14,7 +14,7 @@
             <div class="p-2">
                 <div class="category-item">
                 <a href="{{ route('index.category', $category->id) }}" class="text-decoration-none">
-                    <img src="{{ secure_asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="category-image" style="max-width:100%;">
+                    <img src="{{ secure_asset('images/' . $category->image) }}" alt="{{ $category->name }}" class="category-image" style="max-width:100%;">
                     <div class="category-title text-black">{{ $category->name }}</div>
                     </div>
             </div>
@@ -35,7 +35,7 @@
                     <p class="card-text">Dengan ukuran layar hingga 43" Rp 3.199.000</p>
                     <a href="#" class="btn btn-primary">Check out now</a>
                 </div>
-                <img src="{{ secure_asset('storage/images/tvsamsung.jpg') }}" alt="TCL 43 Smart TV">
+                <img src="{{ secure_asset('images/TCL43.jpg') }}" alt="TCL 43 Smart TV">
             </div>
         </div>
 
@@ -51,7 +51,7 @@
                             <p class="card-text">Berkekuatan CPU: Snapdragon 8 Gen 3 For Galaxy Rp 24.499.000</p>
                             <a href="http://127.0.0.1:8000/products/5" class="btn btn-primary">Check out now</a>
                         </div>
-                        <img src="{{ secure_asset('storage/images/samsungultra.jpg') }}" alt="Samsung Galaxy Z Fold6">
+                        <img src="{{ secure_asset('images/samsungultra.jpg') }}" alt="Samsung Galaxy Z Fold6">
                     </div>
                 </div>
 
@@ -64,7 +64,7 @@
                             <p class="card-text">MacBook Pro 14 inci dengan chip M4 menghadirkan performa spektakuler Rp 27.999.000</p>
                             <a href="http://127.0.0.1:8000/products/6" class="btn btn-primary">Check out now</a>
                         </div>
-                        <img src="{{ secure_asset('storage/images/macbook.jpg') }}" alt="Apple MacBook Pro M4">
+                        <img src="{{ secure_asset('images/macbook.jpg') }}" alt="Apple MacBook Pro M4">
                     </div>
                 </div>
             </div>
@@ -121,7 +121,7 @@
             <a href="#" class="btn">Check it Out!</a>
         </div>
         <div class="image">
-            <img src="{{ secure_asset('storage/images/airpods.png') }}" alt="Headphone">
+            <img src="{{ secure_asset('images/airpods.png') }}" alt="Headphone">
         </div>
     </div>
 </div>
@@ -142,7 +142,7 @@
                 <div class="card mt-4 h-100 d-flex flex-column" 
                      onclick="window.location.href='{{ route('products.show', $product->id) }}'" 
                      style="cursor: pointer;">
-                    <img src="{{ secure_asset('storage/' . $product->image1) }}" 
+                    <img src="{{ secure_asset('images/' . $product->image1) }}" 
                          class="card-img-top" 
                          alt="{{ $product->name }}" 
                          style="height: 200px; object-fit: cover;">
