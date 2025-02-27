@@ -9,7 +9,7 @@
       <div class="carousel-caption d-none d-md-block"></div>
     </div>
     <div class="carousel-item">
-      <img src="{{ secure_asset('storage/images/iphone16procarousel.webp') }}" alt="slide2" class="d-block w-100 carousel-img">
+      <img src="{{ secure_asset('images/iphone16procarousel.webp') }}" alt="slide2" class="d-block w-100 carousel-img">
       <div class="carousel-caption d-none d-md-block"></div>
     </div>
   </div>
