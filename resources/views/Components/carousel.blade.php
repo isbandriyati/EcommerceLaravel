@@ -5,7 +5,7 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="{{ secure_asset('storage/images/chip.jpg') }}" class="d-block w-100 carousel-img" alt="slide1">
+      <img src="{{ secure_asset('images/chip.jpg') }}" class="d-block w-100 carousel-img" alt="slide1">
       <div class="carousel-caption d-none d-md-block"></div>
     </div>
     <div class="carousel-item">
