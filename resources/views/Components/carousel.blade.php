@@ -5,11 +5,11 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="{{ asset('storage/images/chip.jpg') }}" class="d-block w-100 carousel-img" alt="slide1">
+      <img src="{{ secure_asset('storage/images/chip.jpg') }}" class="d-block w-100 carousel-img" alt="slide1">
       <div class="carousel-caption d-none d-md-block"></div>
     </div>
     <div class="carousel-item">
-      <img src="{{ asset('storage/images/iphone16procarousel.webp') }}" alt="slide2" class="d-block w-100 carousel-img">
+      <img src="{{ secure_asset('storage/images/iphone16procarousel.webp') }}" alt="slide2" class="d-block w-100 carousel-img">
       <div class="carousel-caption d-none d-md-block"></div>
     </div>
   </div>

@@ -6,7 +6,7 @@
         <div class="card h-100 product-clickable">
             <a href="{{ route('products.show', $product->id) }}" class="text-decoration-none text-reset">
                 @if ($product->image1)
-                    <img src="{{ asset('storage/' . $product->image1) }}"
+                    <img src="{{ secure_asset('storage/' . $product->image1) }}"
                          class="card-img-top"
                          alt="{{ $product->name }}"
                          style="height: 180px; object-fit: cover;">
