@@ -16,6 +16,7 @@
 </head>
 <body>
 
+dd(view()->exists('components.navbar'));
 @include('Components.navbar', ['categories' => $categories, 'carts' => $cartItems])
 
 
