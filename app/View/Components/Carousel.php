@@ -21,6 +21,6 @@ class Carousel extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.carousel');
+        return view('Components.carousel');
     }
 }
