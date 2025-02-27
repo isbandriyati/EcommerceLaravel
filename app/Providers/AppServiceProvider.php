@@ -29,6 +29,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with('cartCount', $cartCount);
         });
 
-        Blade::component('components.navbar', 'navbar');
+        Blade::component('Components.navbar', 'Navbar');
     }
 }
