@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('style.css') }}">
 
     <title>@yield('title')</title>
 </head>
@@ -40,7 +40,7 @@ dd(view()->exists('components.navbar'));
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Custom Script -->
-    <script src="{{ asset('script.js') }}"></script>
+    <script src="{{ secure_asset('script.js') }}"></script>
 
 
 
