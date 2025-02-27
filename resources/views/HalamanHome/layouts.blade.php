@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<x-navbar :categories="$categories" :carts="$cartItems" />
+@include('components.navbar', ['categories' => $categories, 'carts' => $cartItems])
 
 
     <main>
