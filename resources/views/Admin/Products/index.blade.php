@@ -46,16 +46,16 @@
 
                         <td class="border px-4 py-2">
                         @if ($product->image1)
-                            <img src="{{ asset('storage/' . $product->image1) }}" alt="Image 1" class="w-16 h-16">
+                            <img src="{{ asset('images/' . $product->image1) }}" alt="Image 1" class="w-16 h-16">
                         @endif
                         @if ($product->image2)
-                            <img src="{{ asset('storage/' . $product->image2) }}" alt="Image 2" class="w-16 h-16">
+                            <img src="{{ asset('images/' . $product->image2) }}" alt="Image 2" class="w-16 h-16">
                         @endif
                         @if ($product->image3)
-                            <img src="{{ asset('storage/' . $product->image3) }}" alt="Image 3" class="w-16 h-16">
+                            <img src="{{ asset('images/' . $product->image3) }}" alt="Image 3" class="w-16 h-16">
                         @endif
                         @if ($product->image4)
-                            <img src="{{ asset('storage/' . $product->image4) }}" alt="Image 4" class="w-16 h-16">
+                            <img src="{{ asset('images/' . $product->image4) }}" alt="Image 4" class="w-16 h-16">
                         @endif
                         </td>
                         <td class="border px-4 py-2">{{ $product->stock }}</td>
