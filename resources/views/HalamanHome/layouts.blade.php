@@ -16,7 +16,7 @@
 </head>
 <body>
 
-@include('components.navbar', ['categories' => $categories, 'carts' => $cartItems])
+@include('Components.navbar', ['categories' => $categories, 'carts' => $cartItems])
 
 
     <main>
