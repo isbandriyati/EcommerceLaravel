@@ -7,21 +7,21 @@
 
         <!-- Email Address -->
         <div>
-            <x-resources.views.Components.input-label for="email" :value="__('Email')" />
-            <x-resources.views.Components.text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-resources.views.Components.input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-resources.views.Components.input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Password')" />
 
-            <x-resources.views.Components.text-input id="password" class="block mt-1 w-full"
+            <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
                             name="password"
                             required autocomplete="current-password" />
 
-            <x-resources.views.Components.input-error :messages="$errors->get('password')" class="mt-2" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Remember Me -->
