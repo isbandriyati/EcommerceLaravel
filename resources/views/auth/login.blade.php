@@ -7,21 +7,34 @@
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            @include('components.input-label', ['for' => 'email', 'slot' => __('Email')])
+            @include('components.text-input', [
+                'id' => 'email',
+                'class' => 'block mt-1 w-full',
+                'type' => 'email',
+                'name' => 'email',
+                'value' => old('email'),
+                'required' => true,
+                'autofocus' => true,
+                'autocomplete' => 'username'
+            ])
+            @include('components.input-error', ['messages' => $errors->get('email'), 'class' => 'mt-2'])
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            @include('components.input-label', ['for' => 'password', 'slot' => __('Password')])
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            @include('components.text-input', [
+                'id' => 'password',
+                'class' => 'block mt-1 w-full',
+                'type' => 'password',
+                'name' => 'password',
+                'required' => true,
+                'autocomplete' => 'current-password'
+            ])
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            @include('components.input-error', ['messages' => $errors->get('password'), 'class' => 'mt-2'])
         </div>
 
         <!-- Remember Me -->
@@ -39,9 +52,7 @@
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+            @include('components.primary-button', ['class' => 'ms-3', 'slot' => __('Log in')])
         </div>
     </form>
 </x-guest-layout>
