@@ -89,8 +89,8 @@
 
 @guest
 <!-- Jika user belum login, tampilkan tombol login -->
-<a href="{{ route('login') }}" class="login-btn" style="margin-right:20px;">Login</a>
-<a href="{{ route('register') }}" class="daftar-btn">Register</a>
+<a href="#" class="login-btn" style="margin-right:20px;">Login</a>
+<a href="#" class="daftar-btn">Register</a>
 @endguest
 
 

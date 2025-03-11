@@ -33,7 +33,7 @@ class ProductController extends Controller
     $cartItems = Cart::all();
 
 
-    $query = Product::query()->with(['category', 'brand']);
+    $query = Product::query()->with(['Category', 'Brand']);
 
     // Filter Kategori
     if ($request->has('categories')) { // Gunakan has() untuk memeriksa keberadaan parameter

@@ -1,6 +1,6 @@
 @extends('HalamanHome.layouts')
 
-@section('title', 'Contoh Halaman')
+@section('title', 'GitalBox')
 
 @section('content')
 <x-carousel />
